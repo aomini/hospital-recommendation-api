@@ -9,7 +9,7 @@
     "migrate": "npx sequelize-cli db:migrate",
     "undo": "npx sequelize-cli db:migrate:undo",
     "seeder-generate": "npx sequelize seed:generate --name default-root",
-    "seed-all": "npx sequelize seed:all"
+    "seed:all": "npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "fs": "^0.0.1-security",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.7.0",
     "nodemon": "^2.0.15",
     "path": "^0.12.7",
