@@ -3,6 +3,7 @@ const {User} = require('../../models')
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Joi = require("joi")
+const jwt = require('jsonwebtoken')
 require("dotenv").config();
 
 
@@ -72,10 +73,31 @@ const findUser = async (req, res) => {
 };
 
 
+const userLogin = async (req, res) => {
+
+  const user = await User.findOne({ where: { username: req.body.username } });
+  if(!user) return res.status(400).send("Invalid Username")
+
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if(!validPassword) return res.status(400).send("Invalid Password")
+
+  const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+
+  res.header('auth-token', token).send(token)
+
+
+
+
+
+    
+}
+
+
 module.exports = {
   findAll,
   createUser,
   findUser,
+  userLogin
 };
 
 
