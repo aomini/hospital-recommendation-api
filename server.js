@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const errorMiddleware = require("./middlewares/errors");
+// const errorMiddleware = require("./middlewares/errors");
 
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
