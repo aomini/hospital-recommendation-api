@@ -24,22 +24,15 @@ const findAll = async (req, res) => {
 };
 
 const schema = Joi.object({
-  first_name: Joi.string().min(6).required(),
+  first_name: Joi.string().min(5).required(),
   email: Joi.string().min(6).required().email(),
   password: Joi.string().min(8).required(),
+  username: Joi.string().min(5).required(),
 });
 
 const createUser = async (req, res) => {
   const { error } = schema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-  
-    // checking if user already exist
-    const user = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-    if (user) return res.status(400).send("User already exist");
   
     // generating password hash
     const salt = await bcrypt.genSalt(10);
@@ -47,7 +40,7 @@ const createUser = async (req, res) => {
   
     // creating user
     const userdata = new User({
-      name: req.body.name,
+      first_name: req.body.first_name,
       email: req.body.email,
       password: hashedpassword,
       username: req.body.username,
@@ -61,6 +54,7 @@ const createUser = async (req, res) => {
       console.log("Error")
     }
 };
+
 
 const findUser = async (req, res) => {
   const { id } = req.params;
