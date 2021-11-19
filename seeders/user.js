@@ -7,11 +7,8 @@ module.exports = {
         {
           first_name: "root",
           last_name: "root",
-          email: "admin@codavatar.tech",
           username: "root",
           password: "Password@123",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       ],
       {}

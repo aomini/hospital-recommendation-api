@@ -6,7 +6,7 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const findAll = async (req, res) => {
+module.exports.findAll = async (req, res) => {
   try {
     const users = await User.findAll();
     res.status(200).json({
@@ -28,26 +28,26 @@ const schema = Joi.object({
   username: Joi.string().min(5).required(),
 });
 
-const createUser = async (req, res) => {
+module.exports.createUser = async (req, res) => {
   const { error } = schema.validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const userData = {
     first_name: req.body.first_name,
-    email: req.body.email,
     password: req.body.password,
     username: req.body.username,
   };
   try {
-    const saveUser = await userdata.create(userData);
+    const saveUser = await User.create(userData);
     res.send("Registration Successful");
+
   } catch (err) {
     console.log("Error");
     res.json(err);
   }
 };
 
-const findUser = async (req, res) => {
+module.exports.findUser = async (req, res) => {
   const { id } = req.params;
 
   const user = await User.findByPk(id);
@@ -62,7 +62,7 @@ const findUser = async (req, res) => {
   });
 };
 
-const userLogin = async (req, res) => {
+module.exports.userLogin = async (req, res) => {
   // const user = await User.findOne({ where: { username: req.body.username } });
   const user = await User.findOne(
     { where: { username: req.body.username } } || {
@@ -81,9 +81,49 @@ const userLogin = async (req, res) => {
   res.send(token);
 };
 
-module.exports = {
-  findAll,
-  createUser,
-  findUser,
-  userLogin,
-};
+module.exports.updateUser = async (req, res) => {
+  
+
+  try{
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    await user.update(req.body);
+    res.status(200).json({
+      message: "User Updated Successfully",
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    res.status(err.code || 400 ).json({
+      data: err,
+    });
+
+  }
+}
+
+module.exports.deleteUser = async (req, res) => {
+  try{
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+
+    if(!user){
+      return res.status(404).json({ message: "User not found" });
+    }
+    await user.destroy();
+    res.status(200).json({
+      message: "User Deleted Successfully",
+      success: true,
+    });
+  } catch (err) {
+    res.status(err.code || 400 ).json({
+      data: err,
+    });
+  }
+}
+
