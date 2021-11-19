@@ -31,6 +31,14 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue("password", hashedpassword);
         },
       },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
 
     {
