@@ -1,8 +1,6 @@
 const express = require("express");
 const { User } = require("../../models");
-const router = express.Router();
 const bcrypt = require("bcrypt");
-const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -21,16 +19,7 @@ module.exports.findAll = async (req, res) => {
   }
 };
 
-const schema = Joi.object({
-  first_name: Joi.string().min(5).required(),
-  password: Joi.string().min(8).required(),
-  username: Joi.string().min(5).required(),
-});
-
 module.exports.createUser = async (req, res) => {
-  const { error } = schema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
   const userData = {
     first_name: req.body.first_name,
     password: req.body.password,
@@ -39,7 +28,6 @@ module.exports.createUser = async (req, res) => {
   try {
     await User.create(userData);
     res.send("Registration Successful");
-
   } catch (err) {
     console.log("Error");
     res.json(err);
@@ -84,13 +72,11 @@ module.exports.userLogin = async (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
-  
-
-  try{
+  try {
     const { id } = req.params;
 
     const user = await User.findByPk(id);
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -101,20 +87,19 @@ module.exports.updateUser = async (req, res) => {
       data: user,
     });
   } catch (err) {
-    res.status(err.code || 400 ).json({
+    res.status(err.code || 400).json({
       data: err,
     });
-
   }
-}
+};
 
 module.exports.deleteUser = async (req, res) => {
-  try{
+  try {
     const { id } = req.params;
 
     const user = await User.findByPk(id);
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     await user.destroy();
@@ -123,9 +108,8 @@ module.exports.deleteUser = async (req, res) => {
       success: true,
     });
   } catch (err) {
-    res.status(err.code || 400 ).json({
+    res.status(err.code || 400).json({
       data: err,
     });
   }
-}
-
+};

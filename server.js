@@ -9,6 +9,8 @@ const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
 const hospitalRoutes = require("./routes/hospital");
 const fieldRoutes = require("./routes/field");
+const lookupRoutes = require("./routes/lookup");
+const lookupValueRoutes = require("./routes/lookup-value");
 
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
@@ -20,6 +22,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/hospitals", hospitalRoutes);
 app.use("/api/fields", fieldRoutes);
+app.use("/api/lookups", lookupRoutes);
+app.use("/api/lookup-values", lookupValueRoutes);
 
 // middleware to handle errors
 // @todo fix

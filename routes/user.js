@@ -8,9 +8,10 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/UserController");
+const UserRegisterRequest = require("../http/Request/UserRequest/UserRegisterRequest");
 
 router.get("/", findAll);
-router.post("/", createUser);
+router.post("/", UserRegisterRequest, createUser);
 router.get("/:id", findUser);
 router.post("/login", userLogin);
 router.put("/:id", updateUser);
