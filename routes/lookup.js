@@ -7,10 +7,11 @@ const {
   destroy,
 } = require("../controllers/LookupController");
 const LookupCreateRequest = require("../http/Request/LookupRequest/LookupCreateRequest");
+const UserAuth = require("../middlewares/UserAuth");
 
-Router.get("/", all);
-Router.post("/", LookupCreateRequest, create);
-Router.put("/:id", update);
-Router.delete("/:id", destroy);
+Router.get("/", UserAuth, all);
+Router.post("/", UserAuth, LookupCreateRequest, create);
+Router.put("/:id", UserAuth, update);
+Router.delete("/:id", UserAuth, destroy);
 
 module.exports = Router;
