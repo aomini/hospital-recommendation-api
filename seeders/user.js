@@ -9,6 +9,7 @@ module.exports = {
           last_name: "root",
           email: "admin@codavatar.tech",
           username: "root",
+          password: "Password@123",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -21,3 +22,4 @@ module.exports = {
     await queryInterface.bulkDelete("User", null, {});
   },
 };
+
