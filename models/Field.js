@@ -20,25 +20,11 @@ module.exports = (sequelize, DataTypes) => {
       userc_id: DataTypes.INTEGER,
       userd_id: DataTypes.INTEGER,
       useru_id: DataTypes.INTEGER,
-      created_at: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: new Date(),
-      },
-      updated_at: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: new Date(),
-      },
-      deleted_at: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: new Date(),
-      },
     },
     {
       sequelize,
       paranoid: true,
+      underscored: true,
       tableName: "fields",
       modelName: "Field",
     }
