@@ -77,7 +77,10 @@ module.exports.userLogin = async (req, res) => {
     expiresIn: "1h",
   });
 
-  res.send(token);
+  res.status(200).json({
+    message: "Logged in successfully",
+    data: token,
+  });
 };
 
 module.exports.updateUser = async (req, res) => {
