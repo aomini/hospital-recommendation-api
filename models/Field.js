@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   Field.init(
     {
       name: DataTypes.STRING,
-      code: DataTypes.STRING,
-      weight: DataTypes.INTEGER,
-      order: DataTypes.INTEGER,
       userc_id: DataTypes.INTEGER,
       userd_id: DataTypes.INTEGER,
       useru_id: DataTypes.INTEGER,

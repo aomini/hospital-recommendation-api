@@ -14,14 +14,6 @@ module.exports = {
         required: true,
         unique: true,
       },
-      code: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      weight: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
       order: {
         type: Sequelize.INTEGER,
         allowNull: false,
