@@ -23,7 +23,6 @@ module.exports.findAll = async (req, res) => {
 
 const schema = Joi.object({
   first_name: Joi.string().min(5).required(),
-  // email: Joi.string().min(6).required().email(),
   password: Joi.string().min(8).required(),
   username: Joi.string().min(5).required(),
 });
@@ -38,7 +37,7 @@ module.exports.createUser = async (req, res) => {
     username: req.body.username,
   };
   try {
-    const saveUser = await User.create(userData);
+    await User.create(userData);
     res.send("Registration Successful");
 
   } catch (err) {
