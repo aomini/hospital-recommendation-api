@@ -19,7 +19,7 @@ module.exports = {
         allowNull: true,
       },
       weight: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       order: {
