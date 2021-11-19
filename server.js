@@ -30,6 +30,6 @@ app.use("/api/lookup-values", lookupValueRoutes);
 // app.use(errorMiddleware);
 
 app.listen(port, () => {
-  sequelize.sync({ alter: true });
+  // sequelize.sync({ alter: true });
   console.log(`Server running on port ${port}`);
 });

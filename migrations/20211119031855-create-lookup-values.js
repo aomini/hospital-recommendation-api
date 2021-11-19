@@ -17,6 +17,16 @@ module.exports = {
       value: {
         type: Sequelize.STRING,
       },
+      lookup_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: "lookups",
+          },
+          key: "id",
+        },
+      },
       ...migrationDefaultFields(Sequelize),
     });
   },

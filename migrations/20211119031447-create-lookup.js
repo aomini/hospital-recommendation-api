@@ -1,4 +1,7 @@
 "use strict";
+
+const migrationDefaultFields = require("../traits/database/migration-default-fields");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("lookups", {
@@ -19,14 +22,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+      ...migrationDefaultFields(Sequelize),
     });
   },
   down: async (queryInterface, Sequelize) => {

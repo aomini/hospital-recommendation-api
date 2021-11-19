@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const modelDefaultFields = require("../traits/database/model-default-fields");
 module.exports = (sequelize, DataTypes) => {
   class Lookup extends Model {
     /**
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       code: DataTypes.STRING,
+      ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,

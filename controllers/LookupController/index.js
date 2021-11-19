@@ -15,7 +15,7 @@ module.exports.all = async (req, res) => {
 /** @validation name & code are both required and code must be unique */
 module.exports.create = async (req, res) => {
   try {
-    const lookup = await Lookup.create(req.body);
+    const lookup = await Lookup.create({ ...req.body, userc_id: 1 });
     res.status(201).json({
       success: true,
       data: lookup,
@@ -42,7 +42,7 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    await found.update(req.body);
+    await found.update({ ...req.body, useru_id: 1 });
     res.status(201).json({
       success: true,
       data: await Lookup.findByPk(id),
@@ -68,7 +68,8 @@ module.exports.destroy = async (req, res) => {
       });
     }
 
-    await found.destroy();
+    await found.update({ deleted_at: new Date(), userd_id: 1 });
+
     res.status(201).json({
       success: true,
       message: "Lookup deleted successfully",

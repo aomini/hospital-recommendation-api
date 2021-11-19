@@ -71,7 +71,7 @@ module.exports.update = async (req, res) => {
 
 module.exports.destroy = async (req, res) => {
   const { id } = req.params;
-
+  console.log("here", id);
   try {
     const found = await LookupValue.findByPk(id);
 
@@ -83,7 +83,7 @@ module.exports.destroy = async (req, res) => {
     }
 
     await found.update({
-      useru_id: 2,
+      useru_id: 1,
       deleted_at: new Date(),
     });
 

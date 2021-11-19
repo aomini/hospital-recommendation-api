@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const modelUserFields = require("../traits/database/model-user-fields");
+const modelDefaultFields = require("../traits/database/model-default-fields");
 
 module.exports = (sequelize, DataTypes) => {
   class LookupValue extends Model {
@@ -19,8 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       label: DataTypes.STRING,
       value: DataTypes.STRING,
       lookup_id: DataTypes.INTEGER,
-      deleted_at: DataTypes.DATE,
-      ...modelUserFields(DataTypes),
+      ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,
