@@ -26,7 +26,7 @@ module.exports.createUser = async (req, res) => {
     username: req.body.username,
   };
   try {
-    const saveUser = await User.create(userData);
+    await User.create(userData);
     res.send("Registration Successful");
   } catch (err) {
     console.log("Error");
@@ -65,7 +65,10 @@ module.exports.userLogin = async (req, res) => {
     expiresIn: "1h",
   });
 
-  res.send(token);
+  res.status(200).json({
+    message: "Logged in successfully",
+    data: token,
+  });
 };
 
 module.exports.updateUser = async (req, res) => {
