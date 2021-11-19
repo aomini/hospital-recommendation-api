@@ -39,12 +39,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
+      deleted_at: {
+        type: DataTypes.DATE,
+      },
     },
 
     {
       sequelize,
       tableName: "users",
       modelName: "User",
+      underscored: true,
       paranoid: true,
     }
   );
