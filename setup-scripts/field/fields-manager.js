@@ -1,11 +1,8 @@
-const express = require("express");
-const { Field, FieldItem } = require("./models");
+const { Field, FieldItem } = require("../../models");
 
 const fields = require("./fields");
 
-const app = express();
-app.listen(4000, async () => {
-  // await Field.truncate({ force: true });
+(async () => {
   let fieldItems = [];
 
   for (let index = 0; index < fields.length; index++) {
@@ -41,4 +38,4 @@ app.listen(4000, async () => {
     }
   }
   await FieldItem.bulkCreate(fieldItems);
-});
+})();

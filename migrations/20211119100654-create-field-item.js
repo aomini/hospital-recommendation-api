@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
       },
       order: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       meta: {

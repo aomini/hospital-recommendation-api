@@ -204,32 +204,8 @@ const fields = [
     section: "Clinical Laboratory Equipments",
     code: "clinical_laboratory_equipments",
     parentSection: "Infrastructure and equipments",
-    items: [
-      {
-        title: "ECG",
-        code: "ecg",
-        type: "radio",
-        single: true,
-      },
-      {
-        title: "ECHO",
-        code: "echo",
-        type: "radio",
-        single: true,
-      },
-      {
-        title: "EMG",
-        code: "emg",
-        type: "radio",
-        single: true,
-      },
-      {
-        title: "Endoscopy",
-        code: "endoscopy",
-        type: "radio",
-        single: true,
-      },
-    ],
+    lookup_code: "clinical_laboratory_equipments",
+    fromLookup: true,
   },
   {
     section: "Staff Details",
@@ -396,17 +372,10 @@ const fields = [
     ],
   },
   {
-    section: "Core Services",
-    code: "core_services",
+    section: "Clinical Departments",
+    code: "clinical_departments",
+    lookup_code: "clinical_departments",
     fromLookup: true,
-    items: [
-      {
-        title: "Core Services",
-        code: "core_services",
-        type: "lookup",
-        lookup_code: "core_services",
-      },
-    ],
   },
   {
     section: "Other Facilities",

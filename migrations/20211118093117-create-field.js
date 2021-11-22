@@ -32,7 +32,7 @@ module.exports = {
         allowNull: false,
       },
       meta: {
-        type: DataTypes.JSONB,
+        type: Sequelize.JSONB,
         allowNull: true,
       },
       ...migrationDefaultFields(Sequelize),
