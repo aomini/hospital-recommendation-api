@@ -52,7 +52,6 @@ const checkLookup = async (req, id) => {
   return lookup;
 };
 
-/** @validation name & code are both required and code must be unique */
 module.exports.create = async (req, res) => {
   try {
     if (checkLookup(req)) {

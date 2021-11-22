@@ -206,6 +206,7 @@ const fields = [
     parentSection: "Infrastructure and equipments",
     lookup_code: "clinical_laboratory_equipments",
     fromLookup: true,
+    multiple: true,
   },
   {
     section: "Staff Details",
@@ -376,6 +377,7 @@ const fields = [
     code: "clinical_departments",
     lookup_code: "clinical_departments",
     fromLookup: true,
+    multiple: true,
   },
   {
     section: "Other Facilities",
@@ -512,7 +514,7 @@ const fields = [
         title: "pollution",
         subtitle: "Risk of Pollution and Contaminated Land",
         code: "environmental_pollution",
-        text: "number",
+        type: "number",
       },
       {
         title: "Harm to Historical and Cultural Assets",
@@ -524,7 +526,7 @@ const fields = [
         title: "Remarks",
         subtitle: "Comments about the Impacts",
         code: "environmental_remarks",
-        text: "textarea",
+        type: "textarea",
       },
     ],
   },
