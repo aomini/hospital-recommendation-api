@@ -31,10 +31,10 @@ module.exports = {
         },
       },
       value: {
-        type: DataTypes.JSONB,
+        type: Sequelize.JSONB,
       },
       meta: {
-        type: DataTypes.JSONB,
+        type: Sequelize.JSONB,
       },
       ...migrationDefaultFields(Sequelize),
     });

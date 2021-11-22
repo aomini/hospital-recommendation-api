@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       significance: {
-        type: DataTypes.BOOLEAN,
+        type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
       status: {

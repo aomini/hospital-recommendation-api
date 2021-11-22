@@ -21,13 +21,9 @@ module.exports.all = async (req, res, next) => {
   }
 };
 
-const find = async () => {
-  return;
-};
-
 module.exports.create = async (req, res) => {
   try {
-    const hospital = await Hospital.create({});
+    const hospital = await Hospital.create({ userc_id: req.user.id });
     res.status(201).json({
       success: true,
       data: hospital,
@@ -62,6 +58,7 @@ module.exports.update = async (req, res) => {
     if (found.status === "autodraft") {
       await found.update({
         status: "draft",
+        useru_id: req.user.id,
       });
     }
     // const fieldItem = await FieldItem.findByPk(field_item_id);

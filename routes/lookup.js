@@ -10,10 +10,10 @@ const {
 const LookupCreateRequest = require("../http/Request/LookupRequest/LookupCreateRequest");
 const UserAuth = require("../middlewares/UserAuth");
 
-Router.get("/", all);
-Router.get("/:code", find);
-Router.post("/", LookupCreateRequest, create);
-Router.put("/:id", LookupCreateRequest, update);
-Router.delete("/:id", destroy);
+Router.get("/", UserAuth, all);
+Router.get("/:code", UserAuth, find);
+Router.post("/", UserAuth, LookupCreateRequest, create);
+Router.put("/:id", UserAuth, LookupCreateRequest, update);
+Router.delete("/:id", UserAuth, destroy);
 
 module.exports = Router;

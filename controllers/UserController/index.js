@@ -62,14 +62,14 @@ module.exports.userLogin = async (req, res, next) => {
   if (!validPassword) return res.status(400).send("Invalid Password");
 
   const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "1d",
   });
 
   res.header("auth-token", token).json({
     message: "Logged in successfully",
     data: token,
   });
-  next()
+  next();
 };
 
 module.exports.updateUser = async (req, res) => {

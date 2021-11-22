@@ -59,7 +59,7 @@ module.exports.create = async (req, res) => {
         code: "lookup with that code already exists",
       });
     }
-    const lookup = await Lookup.create({ ...req.body, userc_id: 1 });
+    const lookup = await Lookup.create({ ...req.body, userc_id: req.user.id });
     res.status(201).json({
       success: true,
       data: lookup,
@@ -92,7 +92,7 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    await found.update({ ...req.body, useru_id: 1 });
+    await found.update({ ...req.body, useru_id: req.user.id });
     res.status(201).json({
       success: true,
       data: await Lookup.findByPk(id),
@@ -118,7 +118,7 @@ module.exports.destroy = async (req, res) => {
       });
     }
 
-    await found.update({ deleted_at: new Date(), userd_id: 1 });
+    await found.update({ deleted_at: new Date(), userd_id: req.user.id });
 
     res.status(201).json({
       success: true,
