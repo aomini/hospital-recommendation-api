@@ -36,6 +36,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       meta: {
         type: Sequelize.JSONB,
         allowNull: true,

@@ -1,6 +1,7 @@
 const fields = [
   {
     section: "General",
+    code: "general",
     items: [
       {
         title: "Name of Hospital",
@@ -54,6 +55,7 @@ const fields = [
   // Location & space
   {
     section: "Location and Space",
+    code: "location_and_space",
     items: [
       {
         title: "Built up Area",
@@ -158,6 +160,7 @@ const fields = [
   },
   {
     section: "Infrastructure and equipments",
+    code: "infrastructure_and_equipments",
     items: [
       {
         title: "Number of Beds",
@@ -199,6 +202,8 @@ const fields = [
   },
   {
     section: "Clinical Laboratory Equipments",
+    code: "clinical_laboratory_equipments",
+    parentSection: "Infrastructure and equipments",
     items: [
       {
         title: "ECG",
@@ -228,6 +233,7 @@ const fields = [
   },
   {
     section: "Staff Details",
+    code: "staff_details",
     items: [
       {
         title: "Number of Doctors",
@@ -246,4 +252,312 @@ const fields = [
       },
     ],
   },
+  {
+    section: "Capacity Utilization",
+    code: "capacity_utilization",
+    items: [
+      {
+        title: "Number of Out Patients",
+        code: "number_of_out_patients",
+        type: "number",
+      },
+      {
+        title: "Number of In Patients",
+        code: "number_of_in_patients",
+        type: "number",
+      },
+      {
+        title: "Number of recurring Patients",
+        code: "number_of_recurring_patients",
+        type: "number",
+      },
+    ],
+  },
+  {
+    section: "System and Process",
+    code: "system_and_process",
+    items: [
+      {
+        title: "Easy Appointment Booking Over Internet",
+        code: "easy_appointment_booking_over_internet",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Mobile App",
+        code: "mobile_app",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Public Noticeboard and Easy to Navigate Directions",
+        code: "public_noticeboard_and_easy_to_navigate_directions",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "International Relations Desk",
+        code: "internation_relation_desk",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Enough Consulting Time with Doctors",
+        code: "enough_consulting_time_with_doctors",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Implementation of EMR",
+        code: "implementation_of_emr",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Telemedine Facility for Remote patients",
+        code: "telemedine_facility_for_remote_patients",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Food Catering services to patients",
+        code: "food_catering_services_to_patients",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Laundry services to patients",
+        code: "laundry_services_to_patients",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "24/7 in house specialists",
+        code: "247_in_house_specialists",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Availability of treatment packages for IPD",
+        code: "availability_of_treatment_packages_for_ipd",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Average Time Taken for Discharge",
+        code: "average_time_take_for_discharge",
+        type: "text",
+      },
+      {
+        title: "Average Length of Stay",
+        code: "average_length_of_stay",
+        type: "text",
+      },
+      {
+        title: "Mortality rate",
+        subtitle: "%",
+        code: "mortality_rate",
+        type: "number",
+      },
+      {
+        title: "Patient Safety Guidelines and Goals",
+        code: "patient_safety_guidelines_and_goals",
+        type: "textarea",
+      },
+      {
+        title: "Patient Family Education",
+        code: "patient_family_education",
+        type: "radio",
+        single: true,
+      },
+    ],
+  },
+  {
+    section: "Key specialists",
+    code: "key_specialists",
+    multiple: true,
+    composite: true,
+    items: [
+      {
+        title: "Doctor Name",
+        code: "doctor_name",
+        type: "text",
+      },
+      {
+        title: "Availability",
+        code: "doctor_availability",
+        type: "text",
+      },
+      {
+        title: "Key Specialization",
+        code: "key_specialization",
+        type: "text",
+      },
+    ],
+  },
+  {
+    section: "Core Services",
+    code: "core_services",
+    fromLookup: true,
+    items: [
+      {
+        title: "Core Services",
+        code: "core_services",
+        type: "lookup",
+        lookup_code: "core_services",
+      },
+    ],
+  },
+  {
+    section: "Other Facilities",
+    code: "other_facilities",
+    items: [
+      {
+        title: "Number of Pharmacies Inside Hospital",
+        code: "number_of_pharmacies_inside_hospital",
+        type: "number",
+      },
+      {
+        title: "Number of Discounted Pharmacies",
+        code: "number_of_discounted_pharmacies",
+        type: "number",
+      },
+      {
+        title: "Number of Pharmacies within 200m radius",
+        code: "number_of_pharmacies_within_200m_radius",
+        type: "number",
+      },
+      {
+        title: "ATM machines within 200m radius",
+        subtitle: "from Gate",
+        code: "atm_machines_with_200m_radius",
+        type: "number",
+      },
+      {
+        title: "Restaurants / Convenience Store Nearby",
+        subtitle: "100m Radius",
+        code: "atm_machines_with_200m_radius",
+        type: "number",
+      },
+    ],
+  },
+  {
+    section: "Franchise & Branches",
+    code: "franchise_and_branches",
+    items: [
+      {
+        title: "Franchise to 3rd party",
+        code: "franchise_to_3rd_party",
+        type: "radio",
+        single3: true,
+      },
+      {
+        title: "Number of Branches/Franchies",
+        code: "number_of_branches_or_franchies",
+        type: "number",
+      },
+      {
+        title: "Number of Checkup Clinics",
+        code: "number_of_checkup_clinics",
+        type: "number",
+      },
+      {
+        title: "Number of Official Branches",
+        code: "number_of_official_branches",
+        type: "number",
+      },
+    ],
+  },
+  {
+    section: "User Reviews",
+    code: "user_reviews",
+    invisible: true,
+  },
+  {
+    section: "Miscellaneous",
+    code: "miscellaneous",
+    items: [
+      {
+        title: "Population Density-1KM Radius",
+        code: "population_density_1km_radius",
+        type: "number",
+      },
+      {
+        title: "Population Density-3KM Radius",
+        code: "population_density_3km_radius",
+        type: "number",
+      },
+      {
+        title: "Traffic data",
+        code: "traffic_data",
+        type: "number",
+        invisible: true,
+      },
+      {
+        title: "Growing Population within 3KM Radius",
+        code: "growing_population_3km_radius",
+        type: "number",
+      },
+      {
+        title: "Space for Growth and Expansion",
+        code: "space_for_growth_and_expansion",
+        type: "number",
+      },
+      {
+        title: "Helipad",
+        code: "helipad",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Doctor on Call",
+        code: "doctor_on_call",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Home care counselling",
+        code: "home_care_counselling",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "AI and Future Ready Health",
+        code: "ai_and_future_ready_health",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Sanitation and Cleanliness",
+        code: "sanitization_and_cleanliness",
+        type: "radio",
+        single: true,
+      },
+    ],
+  },
+  {
+    section: "Environmental impacts",
+    code: "environmental_impacts",
+    items: [
+      {
+        title: "pollution",
+        subtitle: "Risk of Pollution and Contaminated Land",
+        code: "environmental_pollution",
+        text: "number",
+      },
+      {
+        title: "Harm to Historical and Cultural Assets",
+        code: "harm_to_historical_and_cultural_assets",
+        type: "radio",
+        single: true,
+      },
+      {
+        title: "Remarks",
+        subtitle: "Comments about the Impacts",
+        code: "environmental_remarks",
+        text: "textarea",
+      },
+    ],
+  },
 ];
+module.exports = fields;

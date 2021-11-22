@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const modelDefaultFields = require("../traits/database/model-default-fields");
+
 module.exports = (sequelize, DataTypes) => {
   class Field extends Model {
     /**
@@ -7,16 +9,30 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({ FieldItem, Field }) {
+      this.hasMany(FieldItem, {
+        as: "field_items",
+      });
+
+      this.hasMany(Field, {
+        foreignKey: "parent_id",
+        as: "childrens",
+      });
     }
   }
   Field.init(
     {
+      parent_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
-      userc_id: DataTypes.INTEGER,
-      userd_id: DataTypes.INTEGER,
-      useru_id: DataTypes.INTEGER,
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      meta: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+      },
+      ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,

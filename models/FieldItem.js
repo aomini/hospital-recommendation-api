@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       subtitle: DataTypes.STRING,
       code: DataTypes.STRING,
       type: DataTypes.STRING,
+      order: {
+        type: DataTypes.INTEGER,
+      },
       meta: DataTypes.JSONB,
       ...modelDefaultFields(DataTypes),
     },
@@ -26,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       paranoid: true,
       underscored: true,
-      tableName: "fields",
+      tableName: "field_items",
       modelName: "FieldItem",
     }
   );
