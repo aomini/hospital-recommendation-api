@@ -9,12 +9,13 @@ const {
   deleteUser,
 } = require("../controllers/UserController");
 const UserRegisterRequest = require("../http/Request/UserRequest/UserRegisterRequest");
+const UserAuth = require("../middlewares/UserAuth");
 
-router.get("/", findAll);
+router.get("/", UserAuth, findAll);
 router.post("/", UserRegisterRequest, createUser);
-router.get("/:id", findUser);
+router.get("/:id", UserAuth, findUser);
 router.post("/login", userLogin);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.put("/:id", UserAuth, updateUser);
+router.delete("/:id", UserAuth, deleteUser);
 
 module.exports = router;

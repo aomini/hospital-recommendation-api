@@ -6,10 +6,11 @@ const {
   update,
   destroy,
 } = require("../controllers/LookupValueController");
+const UserAuth = require("../middlewares/UserAuth");
 
-Router.get("/:lookupID", all);
-Router.post("/:lookupID", create);
-Router.put("/:id", update);
-Router.delete("/:id", destroy);
+Router.get("/:lookupID", UserAuth, all);
+Router.post("/:lookupID", UserAuth, create);
+Router.put("/:id", UserAuth, update);
+Router.delete("/:id", UserAuth, destroy);
 
 module.exports = Router;

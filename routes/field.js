@@ -6,10 +6,11 @@ const {
   destroy,
 } = require("../controllers/FieldController");
 const router = express.Router();
+const UserAuth = require("../middlewares/UserAuth");
 
-router.get("/", all);
-router.post("/", create);
-router.put("/:id", update);
-router.delete("/:id", destroy);
+router.get("/", UserAuth, all);
+router.post("/", UserAuth, create);
+router.put("/:id", UserAuth, update);
+router.delete("/:id", UserAuth, destroy);
 
 module.exports = router;

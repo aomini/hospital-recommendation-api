@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    toJSON() {
+      return { ...this.get(), password: null };
+    }
   }
   User.init(
     {
@@ -50,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       underscored: true,
       paranoid: true,
+      underscored: true,
     }
   );
   return User;
