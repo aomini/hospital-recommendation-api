@@ -1,46 +1,37 @@
 "use strict";
 const { Model } = require("sequelize");
 const modelDefaultFields = require("../traits/database/model-default-fields");
-
 module.exports = (sequelize, DataTypes) => {
-  class Field extends Model {
+  class FieldItem extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ FieldItem, Field }) {
-      this.hasMany(FieldItem, {
-        as: "field_items",
-      });
-
-      this.hasMany(Field, {
-        foreignKey: "parent_id",
-        as: "childrens",
-      });
+    static associate(models) {
+      // define association here
     }
   }
-  Field.init(
+  FieldItem.init(
     {
-      parent_id: DataTypes.INTEGER,
-      name: DataTypes.STRING,
+      field_id: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      subtitle: DataTypes.STRING,
+      code: DataTypes.STRING,
+      type: DataTypes.STRING,
       order: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
-      meta: {
-        type: DataTypes.JSONB,
-        allowNull: true,
-      },
+      meta: DataTypes.JSONB,
       ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,
       paranoid: true,
       underscored: true,
-      tableName: "fields",
-      modelName: "Field",
+      tableName: "field_items",
+      modelName: "FieldItem",
     }
   );
-  return Field;
+  return FieldItem;
 };

@@ -1,19 +1,18 @@
 "use strict";
-
 const migrationDefaultFields = require("../traits/database/migration-default-fields");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("fields", {
+    await queryInterface.createTable("field_items", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      parent_id: {
-        allowNull: true,
+      field_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: {
             tableName: "fields",
@@ -21,15 +20,25 @@ module.exports = {
           key: "id",
         },
       },
-      name: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
-        required: true,
-        unique: true,
+      },
+      subtitle: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       order: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       meta: {
         type: Sequelize.JSONB,
@@ -39,6 +48,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("fields");
+    await queryInterface.dropTable("field_items");
   },
 };

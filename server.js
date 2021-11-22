@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require('cors')
+const cors = require("cors");
 const app = express();
 const morgan = require("morgan");
 const { sequelize } = require("./models");
@@ -16,7 +16,7 @@ const lookupValueRoutes = require("./routes/lookup-value");
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
 
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
@@ -32,6 +32,6 @@ app.use("/api/lookup-values", lookupValueRoutes);
 // app.use(errorMiddleware);
 
 app.listen(port, () => {
-  // sequelize.sync({ alter: true });
+  sequelize.sync({ alter: true });
   console.log(`Server running on port ${port}`);
 });

@@ -1,8 +1,42 @@
-const { Field } = require("../../models");
+const { Field, FieldItem, Sequelize } = require("../../models");
+const { Op } = Sequelize;
 
+/** order reference https://github.com/sequelize/sequelize/issues/4553 */
 module.exports.all = async (req, res, next) => {
   try {
-    const fields = await Field.findAll();
+    const fields = await Field.findAll({
+      where: {
+        parent_id: {
+          [Op.is]: null,
+        },
+      },
+      include: { all: true, nested: true },
+      // include: [
+      //   {
+      //     model: FieldItem,
+      //     as: "field_items",
+      //   },
+      //   {
+      //     model: Field,
+      //     as: "childrens",
+      //     include: {
+      //       model: FieldItem,
+      //       as: "field_items",
+      //     },
+      //   },
+      // ],
+      order: [
+        ["order", "ASC"],
+        [{ model: FieldItem, as: "field_items" }, "order", "asc"],
+        [
+          { model: Field, as: "childrens" },
+          { model: FieldItem, as: "field_items" },
+          "order",
+          "asc",
+        ],
+      ],
+    });
+
     res.json({
       success: true,
       data: fields,
