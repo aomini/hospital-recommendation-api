@@ -1,9 +1,18 @@
-const { Priority } = require("../../models");
+const { Priority, FieldItem, Field } = require("../../models");
 
 module.exports.all = async (req, res, next) => {
   try {
     const priorities = await Priority.findAll({
-      include: { all: true, nested: true },
+      include: [
+        {
+          model: FieldItem,
+          attributes: ["id", "title", "subtitle", "code"],
+          include: {
+            model: Field,
+            attributes: ["name", "id"],
+          },
+        },
+      ],
       order: [["order", "ASC"]],
     });
 

@@ -62,7 +62,7 @@ module.exports.userLogin = async (req, res, next) => {
   if (!validPassword) return res.status(400).send("Invalid Password");
 
   const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "1y",
   });
 
   res.header("auth-token", token).json({
@@ -81,7 +81,8 @@ module.exports.updateUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    await user.update(req.body);
+    const { username, ...rest } = req.body;
+    await user.update(rest);
     res.status(200).json({
       message: "User Updated Successfully",
       success: true,
