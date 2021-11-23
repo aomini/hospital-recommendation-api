@@ -14,7 +14,7 @@ const fields = require("./fields");
       : null;
 
     const fieldData = {
-      order: index + 1,
+      order: (index + 1) * 1024,
       name: field.section,
       parent_id: parentSection ? parentSection.id : null,
       meta: rest,
@@ -31,7 +31,7 @@ const fields = require("./fields");
           subtitle,
           code,
           type,
-          order: itemIndex + 1,
+          order: (itemIndex + 1) * 1024,
           meta: { ...rest },
           userc_id: user.id,
         };
