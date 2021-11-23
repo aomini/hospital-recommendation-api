@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const modelDefaultFields = require("../traits/database/model-default-fields");
+
 module.exports = (sequelize, DataTypes) => {
   class Priority extends Model {
     /**
@@ -20,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       order: DataTypes.INTEGER,
+      ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,
