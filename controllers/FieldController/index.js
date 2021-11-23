@@ -54,7 +54,7 @@ module.exports.create = async (req, res, next) => {
     const lastField = await Field.findOne({
       order: [["order", "DESC"]],
     });
-    const order = lastField ? lastField + 1 : 1;
+    const order = lastField ? lastField + 1024 : 1;
 
     const field = await Field.create({
       ...req.body,
