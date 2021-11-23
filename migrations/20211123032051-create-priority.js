@@ -21,7 +21,7 @@ module.exports = {
         },
       },
       weight: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       order: {
