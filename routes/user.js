@@ -13,6 +13,7 @@ const UserAuth = require("../middlewares/UserAuth");
 
 router.get("/", UserAuth, findAll);
 router.post("/", UserRegisterRequest, createUser);
+router.get("/me", UserAuth, (req, res) => res.json({ data: req.user }));
 router.get("/:id", UserAuth, findUser);
 router.post("/login", userLogin);
 router.put("/:id", UserAuth, updateUser);
