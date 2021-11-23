@@ -1,8 +1,9 @@
-const { Field, FieldItem } = require("../../models");
+const { Field, User, FieldItem } = require("../../models");
 
 const fields = require("./fields");
 
 (async () => {
+  const user = await User.findOne({ where: { username: "rootuser" } });
   let fieldItems = [];
 
   for (let index = 0; index < fields.length; index++) {
@@ -17,6 +18,7 @@ const fields = require("./fields");
       name: field.section,
       parent_id: parentSection ? parentSection.id : null,
       meta: rest,
+      userc_id: user.id,
     };
 
     const createdField = await Field.create(fieldData);
@@ -31,7 +33,7 @@ const fields = require("./fields");
           type,
           order: itemIndex + 1,
           meta: { ...rest },
-          userc_id: 1,
+          userc_id: user.id,
         };
       });
       fieldItems = [...fieldItems, ...createdFieldItems];
