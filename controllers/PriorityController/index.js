@@ -82,3 +82,29 @@ module.exports.order = async (req, res, next) => {
     });
   }
 };
+
+module.exports.update = async (req, res, next) => {
+  try {
+    const priority = await Priority.findByPk(req.params.id);
+    if (!priority) {
+      return res.status(404).json({
+        message: "Priority not found",
+      });
+    }
+
+    await priority.update({
+      ...req.body,
+      useru_id: req.user.id,
+    });
+
+    res.status(201).json({
+      message: "Created Successfully",
+      data: await Priority.findByPk(req.params.id),
+      success: true,
+    });
+  } catch (e) {
+    res.status(e.code || 500).json({
+      message: e.message,
+    });
+  }
+};
