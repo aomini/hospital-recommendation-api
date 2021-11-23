@@ -62,6 +62,7 @@ module.exports = {
       lookup_id: equipmentLookup.id,
       created_at: new Date(),
       updated_at: new Date(),
+      userc_id: user.id,
     }));
 
     const departmentValues = clinicalDepartments.map((x) => ({
@@ -70,6 +71,7 @@ module.exports = {
       lookup_id: departmentLookup.id,
       created_at: new Date(),
       updated_at: new Date(),
+      userc_id: user.id,
     }));
 
     await queryInterface.bulkInsert("lookup_values", [
