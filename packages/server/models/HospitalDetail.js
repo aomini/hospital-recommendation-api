@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const modelDefaultFields = require("../traits/database/model-default-fields");
 module.exports = (sequelize, DataTypes) => {
   class HospitalDetail extends Model {
     /**
@@ -22,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       meta: {
         type: DataTypes.JSONB,
       },
+      ...modelDefaultFields(DataTypes),
     },
     {
       sequelize,
