@@ -146,6 +146,8 @@ module.exports.update = async (req, res) => {
       return {
         field_item_id: data.field_item_id,
         hospital_id: hospitalID,
+        userc_id: req.user.id,
+        useru_id: req.user.id,
         value: {
           value: data.value,
         },
