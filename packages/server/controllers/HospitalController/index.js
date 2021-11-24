@@ -21,6 +21,25 @@ module.exports.all = async (req, res, next) => {
   }
 };
 
+module.exports.findHospital = async (req, res) => {
+  try {
+    const hospital = await Hospital.findByPk(req.params.hospitalID, {
+      include: {
+        all: true,
+        nested: true,
+      },
+    });
+    res.json({
+      data: hospital,
+    });
+  } catch (err) {
+    res.status(err.code || 500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 module.exports.create = async (req, res) => {
   try {
     const hospital = await Hospital.create({ userc_id: req.user.id });
