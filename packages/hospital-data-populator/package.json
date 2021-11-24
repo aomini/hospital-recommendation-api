@@ -1,0 +1,15 @@
+{
+  "name": "@hospital-api/hospital-data-populator",
+  "version": "1.0.0",
+  "description": "Populates selected hospital data on database",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rakesh Shrestha",
+  "license": "ISC",
+  "dependencies": {
+    "@hospital-api/read-xlsx": "1.0.0"
+  }
+}
