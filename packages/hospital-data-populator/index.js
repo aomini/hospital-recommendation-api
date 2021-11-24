@@ -84,6 +84,7 @@ const main = async () => {
           {
             significance: false,
             status: "published",
+            userc_id: user.id,
           },
           {
             transaction: t,
