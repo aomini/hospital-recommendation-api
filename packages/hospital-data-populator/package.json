@@ -10,6 +10,9 @@
   "author": "Rakesh Shrestha",
   "license": "ISC",
   "dependencies": {
-    "@hospital-api/read-xlsx": "1.0.0"
+    "@hospital-api/read-xlsx": "1.0.0",
+    "@hospital-api/server": "1.0.0",
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0"
   }
 }
