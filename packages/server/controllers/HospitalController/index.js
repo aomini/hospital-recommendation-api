@@ -1,4 +1,10 @@
-const { Hospital, Field, FieldItem, HospitalDetail } = require("../../models");
+const {
+  Hospital,
+  Field,
+  FieldItem,
+  HospitalDetail,
+  Sequelize,
+} = require("../../models");
 
 module.exports.all = async (req, res, next) => {
   try {
@@ -33,6 +39,60 @@ module.exports.findHospital = async (req, res) => {
       data: hospital,
     });
   } catch (err) {
+    res.status(err.code || 500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports.getHospitalsWithBasicData = async (req, res) => {
+  try {
+    const hospitals = await Hospital.findAll({
+      include: [
+        {
+          model: HospitalDetail,
+          attributes: ["value"],
+          include: {
+            model: FieldItem,
+            attributes: ["code"],
+            where: {
+              code: {
+                [Sequelize.Op.in]: [
+                  "name_of_hospital",
+                  "latitude",
+                  "longitude",
+                  "address",
+                  "phone_number",
+                  "website",
+                  "distance_from_thankot",
+                  "distance_from_koteshwor",
+                  "distance_from_sanga",
+                  "distance_from_airport",
+                ],
+              },
+            },
+          },
+        },
+      ],
+      where: {
+        status: "published",
+      },
+    });
+    const mappedDetails = hospitals.map((x) => {
+      const details = x.HospitalDetails.reduce((acc, iterator) => {
+        acc[iterator.FieldItem.code] = iterator.value.value;
+        return acc;
+      }, {});
+      return {
+        id: x.id,
+        significance: x.significance,
+        ...details,
+      };
+    });
+    return res.send(mappedDetails);
+  } catch (err) {
+    console.log(err);
     res.status(err.code || 500).json({
       success: false,
       message: err.message,
