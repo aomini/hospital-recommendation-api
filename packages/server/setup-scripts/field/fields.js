@@ -207,6 +207,13 @@ const fields = [
     lookup_code: "clinical_laboratory_equipments",
     fromLookup: true,
     multiple: true,
+    items: [
+      {
+        title: "Clinical Laboratory Equipments",
+        code: "clinical_laboratory_equipments_field",
+        type: "text",
+      },
+    ],
   },
   {
     section: "Staff Details",
@@ -378,6 +385,13 @@ const fields = [
     lookup_code: "clinical_departments",
     fromLookup: true,
     multiple: true,
+    items: [
+      {
+        title: "Clinical Departments",
+        code: "clinical_departments_field",
+        type: "text",
+      },
+    ],
   },
   {
     section: "Other Facilities",

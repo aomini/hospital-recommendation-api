@@ -16,13 +16,13 @@ const { Op } = Sequelize;
 
 const origins = {
   // Tribhuwan internation airport
-  distance_from_airport: "27.69801, 85.35922",
+  distance_from_airport: "27.701803, 85.353394",
   // Koteshwor
-  distance_from_koteshwor: "27.6756, 85.3459",
+  distance_from_koteshwor: "27.678775, 85.349625",
   // Thankot
-  distance_from_thankot: "27.6868, 85.2024",
+  distance_from_thankot: "27.686296, 85.201892",
   // Sanga
-  distance_from_sanga: "27.6347, 85.484",
+  distance_from_sanga: "27.634265, 85.484711",
 };
 
 const computeDefaultValue = (type) => {
