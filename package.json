@@ -5,6 +5,8 @@
   ],
   "scripts": {
     "server": "yarn workspace @hospital-api/server start",
+    "migrate": "yarn workspace @hospital-api/server migrate",
+    "seed:all": "yarn workspace @hospital-api/server seed:all",
     "populate": "yarn workspace @hospital-api/hospital-data-populator start",
     "start": "yarn server",
     "test": "echo \"Error: no test specified\" && exit 1"

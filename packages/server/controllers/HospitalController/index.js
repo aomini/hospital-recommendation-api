@@ -12,6 +12,28 @@ module.exports.all = async (req, res, next) => {
     const offset = 10;
     const hospitals = await Hospital.findAndCountAll({
       include: { all: true, nested: true },
+      include: [
+        {
+          model: HospitalDetail,
+          attributes: ["value"],
+          include: {
+            model: FieldItem,
+            attributes: ["code"],
+            where: {
+              code: {
+                [Sequelize.Op.in]: [
+                  "name_of_hospital",
+                  "latitude",
+                  "longitude",
+                  "address",
+                  "phone_number",
+                  "website",
+                ],
+              },
+            },
+          },
+        },
+      ],
       where: {
         status,
       },
@@ -134,16 +156,23 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    if (found.status === "autodraft") {
+    if (found.status === "auto-draft" || req.query.status) {
+      const status = found.status === "auto-draft" ? "draft" : req.query.status;
       await found.update({
-        status: "draft",
+        status,
         useru_id: req.user.id,
       });
     }
-    // const fieldItem = await FieldItem.findByPk(field_item_id);
 
-    const detailsData = req.body.map((data) => {
-      return {
+    let detailsData = [];
+    for (let data of req.body) {
+      const alreadyExists = await HospitalDetail.findOne({
+        where: {
+          field_item_id: data.field_item_id,
+          hospital_id: hospitalID,
+        },
+      });
+      const newFields = {
         field_item_id: data.field_item_id,
         hospital_id: hospitalID,
         userc_id: req.user.id,
@@ -152,9 +181,14 @@ module.exports.update = async (req, res) => {
           value: data.value,
         },
       };
-    });
+      detailsData = alreadyExists
+        ? [...detailsData, { id: alreadyExists.id, ...newFields }]
+        : [...detailsData, newFields];
+    }
 
-    const data = await HospitalDetail.bulkCreate(detailsData);
+    const data = await HospitalDetail.bulkCreate(detailsData, {
+      updateOnDuplicate: ["value", "useru_id"],
+    });
 
     res.status(201).json({
       success: true,
