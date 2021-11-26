@@ -202,7 +202,7 @@ module.exports.update = async (req, res) => {
   }
 };
 
-module.exports.toggleSignificance = async (req, res, next) => {
+module.exports.updateSignificance = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { significance } = req.body;
