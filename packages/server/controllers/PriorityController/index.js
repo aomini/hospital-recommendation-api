@@ -95,6 +95,7 @@ module.exports.updatePriorities = async (req, res, next) => {
     });
     res.json({
       message: "complete",
+      data: priorities,
     });
   } catch (e) {
     res.status(e.code || 500).json({
