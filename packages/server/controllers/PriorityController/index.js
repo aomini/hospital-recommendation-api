@@ -1,4 +1,6 @@
-const { Priority, FieldItem, Field } = require("../../models");
+const { Priority, FieldItem, Field, Sequelize } = require("../../models");
+
+const { Op } = Sequelize;
 
 module.exports.all = async (req, res, next) => {
   try {
@@ -29,7 +31,13 @@ module.exports.all = async (req, res, next) => {
 
 module.exports.create = async (req, res, next) => {
   try {
-    await Priority.destroy({ truncate: true });
+    const existingPriorities = await Priority.findAll({});
+
+    if (existingPriorities.length) {
+      return res.status(400).json({
+        message: "priorities already created",
+      });
+    }
     const { fieldItems } = req.body;
     const prioritiesData = fieldItems.map((x, index) => {
       return {
@@ -46,6 +54,47 @@ module.exports.create = async (req, res, next) => {
       message: "Created Successfully",
       data: priorities,
       success: true,
+    });
+  } catch (e) {
+    res.status(e.code || 500).json({
+      message: e.message,
+    });
+  }
+};
+
+module.exports.updatePriorities = async (req, res, next) => {
+  try {
+    const { fieldItems } = req.body;
+    await Priority.destroy({
+      where: {
+        field_item_id: {
+          [Op.notIn]: fieldItems,
+        },
+      },
+    });
+
+    const existingPriorities = await Priority.findAll({});
+
+    // Update orders
+    const prioritiesData = fieldItems.map((x, index) => {
+      const alreadyCreated = existingPriorities.find(
+        (y) => y.field_item_id === x
+      );
+      const newField = {
+        field_item_id: x,
+        weight: 1000 - index * 10,
+        order: (index + 1) * 1024,
+        userc_id: req.user.id,
+      };
+
+      return alreadyCreated ? { ...newField, id: alreadyCreated.id } : newField;
+    });
+
+    const priorities = await Priority.bulkCreate(prioritiesData, {
+      updateOnDuplicate: ["order"],
+    });
+    res.json({
+      message: "complete",
     });
   } catch (e) {
     res.status(e.code || 500).json({
