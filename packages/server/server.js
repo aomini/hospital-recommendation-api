@@ -13,6 +13,7 @@ const fieldRoutes = require("./routes/field");
 const lookupRoutes = require("./routes/lookup");
 const lookupValueRoutes = require("./routes/lookup-value");
 const priorityRoutes = require("./routes/priority");
+const compositeRoutes = require("./routes/composite");
 
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
@@ -28,12 +29,13 @@ app.use("/api/fields", fieldRoutes);
 app.use("/api/lookups", lookupRoutes);
 app.use("/api/lookup-values", lookupValueRoutes);
 app.use("/api/priorities", priorityRoutes);
+app.use("/api/composite", compositeRoutes);
 
 // middleware to handle errors
 // @todo fix
 // app.use(errorMiddleware);
 
 app.listen(port, () => {
-  // sequelize.sync({ alter: true });
+  sequelize.sync({ alter: true });
   console.log(`Server running on port ${port}`);
 });

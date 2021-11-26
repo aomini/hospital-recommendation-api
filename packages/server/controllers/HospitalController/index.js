@@ -11,7 +11,7 @@ module.exports.all = async (req, res, next) => {
     const { page = 1, status = "published" } = req.query;
     const offset = 10;
     const hospitals = await Hospital.findAndCountAll({
-      include: { all: true, nested: true },
+      // include: { all: true, nested: true },
       include: [
         {
           model: HospitalDetail,
@@ -198,6 +198,49 @@ module.exports.update = async (req, res) => {
     res.status(err.code || 500).json({
       success: false,
       message: err.message,
+    });
+  }
+};
+
+module.exports.toggleSignificance = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { significance } = req.body;
+    const found = await Hospital.findByPk(id);
+    if (!found) {
+      return res.status(404).json({
+        message: "Hospital not found",
+        success: false,
+      });
+    }
+
+    if (typeof significance !== "boolean")
+      return res.json({
+        success: false,
+        message: "must be boolean",
+      });
+
+    await Hospital.update(
+      {
+        significance,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    return res.status(200).json({
+      status: true,
+      data: {
+        significance,
+      },
+    });
+  } catch (error) {
+    res.status(error.code || 500).json({
+      success: false,
+      message: error.message,
     });
   }
 };
