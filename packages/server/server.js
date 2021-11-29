@@ -36,6 +36,6 @@ app.use("/api/composite", compositeRoutes);
 // app.use(errorMiddleware);
 
 app.listen(port, () => {
-  sequelize.sync({ alter: true });
+  // sequelize.sync({ alter: true });
   console.log(`Server running on port ${port}`);
 });
