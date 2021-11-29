@@ -4,7 +4,7 @@ const migrationDefaultFields = require("../traits/database/migration-default-fie
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Composites", {
+    await queryInterface.createTable("composites", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Composites");
+    await queryInterface.dropTable("composites");
   },
 };
