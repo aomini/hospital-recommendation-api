@@ -23,6 +23,8 @@ module.exports.find = async (req, res, next) => {
       where: {
         hospital_id: hospitalID,
         field_id: fieldID,
+        userc_id: req.user.id,
+        useru_id: req.user.id,
       },
     });
     res.status(200).json({
@@ -40,7 +42,6 @@ module.exports.update = async (req, res, next) => {
   try {
     const { hospitalID, fieldID } = req.params;
     const values = req.body || [];
-
     const found = await Hospital.findByPk(hospitalID);
     if (!found) {
       return res.status(404).json({
@@ -68,6 +69,7 @@ module.exports.update = async (req, res, next) => {
       hospital_id: hospitalID,
       field_id: fieldID,
       values,
+      useru_id: req.user.id,
     };
     if (!alreadyExists) {
       await Composite.create(data);
