@@ -1,33 +1,37 @@
-'use strict';
+"use strict";
+
+const migrationDefaultFields = require("../traits/database/migration-default-fields");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Composites', {
+    await queryInterface.createTable("Composites", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       hospital_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       field_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       values: {
-        type: Sequelize.ARRAY
+        type: Sequelize.ARRAY,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      ...migrationDefaultFields(Sequelize),
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Composites');
-  }
+    await queryInterface.dropTable("Composites");
+  },
 };
