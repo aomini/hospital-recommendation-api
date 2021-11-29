@@ -23,8 +23,6 @@ module.exports.find = async (req, res, next) => {
       where: {
         hospital_id: hospitalID,
         field_id: fieldID,
-        userc_id: req.user.id,
-        useru_id: req.user.id,
       },
     });
     res.status(200).json({
@@ -69,6 +67,7 @@ module.exports.update = async (req, res, next) => {
       hospital_id: hospitalID,
       field_id: fieldID,
       values,
+      userc_id: req.user.id,
       useru_id: req.user.id,
     };
     if (!alreadyExists) {
