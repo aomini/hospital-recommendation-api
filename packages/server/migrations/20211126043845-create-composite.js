@@ -20,14 +20,7 @@ module.exports = {
       values: {
         type: Sequelize.ARRAY(Sequelize.JSONB),
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+
       ...migrationDefaultFields(Sequelize),
     });
   },
