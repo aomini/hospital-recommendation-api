@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       values: {
-        type: Sequelize.ARRAY,
+        type: Sequelize.ARRAY(Sequelize.JSONB),
       },
       createdAt: {
         allowNull: false,
