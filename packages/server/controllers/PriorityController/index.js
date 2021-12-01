@@ -3,6 +3,7 @@ const { Priority, FieldItem, Field, Sequelize } = require("../../models");
 const { Op } = Sequelize;
 
 module.exports.all = async (req, res, next) => {
+  const { sort = "order", order = "asc" } = req.query;
   try {
     const priorities = await Priority.findAll({
       include: [
@@ -15,7 +16,7 @@ module.exports.all = async (req, res, next) => {
           },
         },
       ],
-      order: [["order", "ASC"]],
+      order: [[sort, order.toUpperCase()]],
     });
 
     res.json({
