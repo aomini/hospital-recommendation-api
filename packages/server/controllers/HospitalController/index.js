@@ -4,7 +4,9 @@ const {
   FieldItem,
   HospitalDetail,
   Sequelize,
+  Priority,
 } = require("../../models");
+const { getTotalPriority } = require("../../utils/math");
 
 module.exports.all = async (req, res, next) => {
   try {
@@ -113,6 +115,42 @@ module.exports.getHospitalsWithBasicData = async (req, res) => {
       };
     });
     return res.send(mappedDetails);
+  } catch (err) {
+    console.log(err);
+    res.status(err.code || 500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports.findTopHospitals = async (req, res) => {
+  try {
+    let hospitals = await Hospital.findAll({
+      attributes: ["id"],
+      include: [
+        {
+          model: HospitalDetail,
+          attributes: ["id", "field_item_id", "value"],
+          include: [
+            {
+              model: Priority,
+              attributes: ["order", "weight"],
+              required: true,
+            },
+            {
+              model: FieldItem,
+              attributes: ["title"],
+            },
+          ],
+        },
+      ],
+      where: {
+        status: "published",
+      },
+    });
+
+    return res.status(200).json({ hospitals });
   } catch (err) {
     console.log(err);
     res.status(err.code || 500).json({
