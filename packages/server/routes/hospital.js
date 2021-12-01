@@ -15,6 +15,7 @@ const router = express.Router();
 router.get("/", UserAuth, all);
 router.get("/basic", getHospitalsWithBasicData);
 router.get("/top-hospitals", UserAuth, findTopHospitals);
+router.get("/top-hospitals/report", findTopHospitals);
 router.get("/:hospitalID", UserAuth, findHospital);
 router.post("/", UserAuth, create);
 router.put("/:hospitalID/:fieldID", UserAuth, update);
