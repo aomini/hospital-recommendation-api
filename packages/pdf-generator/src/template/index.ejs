@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hospital Analytics Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      * {
+        font-family: "Inter", sans-serif !important;
+        font-size: 100%;
+        line-height: 1.625em;
+        box-sizing: border-box;
+      }
+
+      *:before {
+        box-sizing: inherit;
+      }
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      div,
+      strong,
+      span,
+      ul,
+      li {
+        font-size: 16px !important;
+      }
+
+      h1 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 2.4375rem;
+        padding-bottom: calc(0.40625rem - 1px);
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 1.21875rem;
+        color: hsla(0, 0%, 0%, 0.8);
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 2rem;
+        line-height: 2.4375rem;
+      }
+
+      h2 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 1.625rem;
+        padding-bottom: calc(0.40625rem - 1px);
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.40625rem;
+        color: hsla(0, 0%, 0%, 0.8);
+
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 1.51572rem;
+        line-height: 2.4375rem;
+      }
+
+      h3 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        color: hsla(0, 0%, 0%, 0.8);
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 1.31951rem;
+        line-height: 1.625rem;
+      }
+
+      h4 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        color: hsla(0, 0%, 0%, 0.8);
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 1rem;
+        line-height: 1.625rem;
+      }
+
+      h5 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        color: hsla(0, 0%, 0%, 0.8);
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 0.87055rem;
+        line-height: 1.625rem;
+      }
+
+      h6 {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        color: hsla(0, 0%, 0%, 0.53);
+        font-weight: 600;
+        text-rendering: optimizeLegibility;
+        font-size: 0.81225rem;
+        line-height: 1.625rem;
+      }
+
+      ul {
+        margin-left: 1.625rem;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        list-style-position: outside;
+        list-style-image: none;
+      }
+
+      ol {
+        margin-left: 1.625rem;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        list-style-position: outside;
+        list-style-image: none;
+      }
+
+      dl {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+      }
+      dd {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+      }
+
+      p {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+      }
+      figure {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+      }
+
+      table {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        margin-bottom: 0.8125rem;
+        font-size: 1rem;
+        line-height: 1.625rem;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      dt {
+        font-weight: 600;
+      }
+      th {
+        font-weight: 600;
+      }
+      li {
+        margin-bottom: calc(0.8125rem / 2);
+      }
+      ol li {
+        padding-left: 0;
+      }
+      ul li {
+        padding-left: 0;
+      }
+      li > ol {
+        margin-left: 1.625rem;
+        margin-bottom: calc(0.8125rem / 2);
+        margin-top: calc(0.8125rem / 2);
+      }
+      li > ul {
+        margin-left: 1.625rem;
+        margin-bottom: calc(0.8125rem / 2);
+        margin-top: calc(0.8125rem / 2);
+      }
+      code {
+        font-size: 0.85rem;
+        line-height: 1.625rem;
+      }
+
+      thead {
+        text-align: left;
+      }
+      td,
+      th {
+        text-align: left;
+        border-bottom: 1px solid hsla(0, 0%, 0%, 0.12);
+        font-feature-settings: tnum;
+        padding-left: 1.08333rem;
+        padding-right: 1.08333rem;
+        padding-top: 0.8125rem;
+        padding-bottom: calc(0.8125rem - 1px);
+      }
+      th:first-child,
+      td:first-child {
+        padding-left: 0;
+      }
+      th:last-child,
+      td:last-child {
+        padding-right: 0;
+      }
+
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-bottom: 0.8125rem;
+        margin-top: 1.625rem;
+      }
+      ol,
+      ul {
+        margin-left: 2.03125rem;
+      }
+      li > ol,
+      li > ul {
+        margin-left: 2.03125rem;
+      }
+      a {
+        color: #4078c0;
+        text-decoration: none;
+      }
+      a:hover,
+      a:active {
+        text-decoration: underline;
+      }
+      @page {
+        size: "auto";
+        margin: 12mm;
+        margin-top: 25mm;
+        /* line-height: 16px; */
+        font-family: "Inter", sans-serif;
+      }
+
+      /* p {
+        line-height: 24px;
+        font-size: 16px;
+        margin: 0;
+      } */
+
+      .footer,
+      .footer-space {
+        height: 80px;
+      }
+
+      .footer {
+        position: fixed;
+        bottom: 0;
+      }
+
+      .footer::after {
+        counter-increment: page;
+        content: counter(page);
+      }
+
+      .cover-page {
+        page-break-after: always;
+      }
+
+      .heading {
+        text-align: center;
+      }
+      .logo {
+        margin: 30px 0;
+      }
+
+      .cover-page-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .cover-page-footer {
+        align-self: flex-end;
+      }
+
+      .cover-page-header .cover-page-footer h4 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body class="page">
+    <div class="cover-page">
+      <div class="cover-page-header">
+        <section class="heading">
+          <h1 style="text-transform: uppercase">
+            Hospital Site Shortlisting research report
+          </h1>
+          <h3>Analysis of hospitals with GIS & weighted system</h3>
+        </section>
+        <img
+          src="https://examselect-live.sgp1.cdn.digitaloceanspaces.com/hospital/hospital.png"
+          alt="A location symbol with cross sign, to represent hospital's location"
+          height="250px"
+          weight="250px"
+          class="logo"
+        />
+        <span class="cover-page-footer">
+          <h4>Submitted By:</h4>
+          <p>Anup Neupane</p>
+        </span>
+      </div>
+    </div>
+
+    <main class="main">
+      <article>
+        <h2>Purpose</h2>
+        <p>The purpose of this research is:</p>
+        <ul>
+          <li>
+            To find the optimal/best potential location for new Hospital inside
+            Kathmandu valley.
+          </li>
+          <li>
+            To work in proven methodology to establish top list of potential
+            sites for a new hospital.
+          </li>
+          <li>In Kathmandu Valley and identify a shortlist of sites.</li>
+          <li>To evaluate the alternative for the best location.</li>
+        </ul>
+      </article>
+      <article>
+        <h2>Introduction</h2>
+        <p>
+          Selecting a location for a potential hospital often decides the
+          success or the failure of such a facility. It is thus important to
+          assess the locations from multiple dimensions before selecting the
+          site. This document focuses on the multi factor evaluation of hospital
+          sites using
+          <strong>Data Driven Analysis process (DDAP)</strong> and evaluates
+          three potential sites inside Kathmandu valley. This document is
+          considered three major factors and eleven sub factors in the
+          evaluation. Findings show that among the sub factors, cost of land,
+          population density and proximity to public transport evolved as the
+          three most significant sub factors.
+        </p>
+        <p>
+          While opening a Hospital can be a very lucrative business, a lack of
+          demand causes many hospitals to close overtime. There are many
+          different factors that can account for a Hospital’s success such as
+          location, competition, patient experiences, Doctor’s rating and
+          specialities, etc. These are some important questions that every
+          investor must carefully answer before deciding whether to open a
+          hospital or not.
+        </p>
+        <p>
+          Besides there are many other factors such as environmental, clinical,
+          potential to grow, legal and regulatory etc.
+        </p>
+        <p>
+          To demonstrate the process of picking a location for a client opening
+          a business, the project will focus on answering the following
+          question: “If the client wanted to open a world class hospital inside
+          Kathmandu Valley, what areas are the best options to open the
+          Hospital?”
+        </p>
+        <p>
+          We will follow the data driven approach and perform various analytics
+          on those data to answer the following questions.
+        </p>
+        <!-- TODO: Data form the API here on this ordered list -->
+        <ol>
+          <li>General</li>
+          <li>
+            Location wise babal thau ma xa?
+            <ol type="a">
+              <li>
+                Does the highway network, locally and strategically, have the
+                capacity to access and serve the hospital?
+              </li>
+              <li>Kathmandu ko sabai point bata xito pugna sakinxa</li>
+              <li>Existing Highway networks to connect to outside of KTM</li>
+              <li>Traffic Congestion ko ni issue khasai xaina</li>
+              <li>Public Transportation ko availability and</li>
+              <li>Availability of developable land</li>
+            </ol>
+          </li>
+        </ol>
+      </article>
+      <article>
+        <h2>Data</h2>
+        <p>
+          To answer this business problem, the following factors have to be
+          extracted from various data sources:
+        </p>
+        <!-- TODO: Data from the API here in this unordered list -->
+        <ul>
+          <li>
+            Population & Ethnic Distribution of Each Neighborhood (Nepal Census)
+          </li>
+          <li>Income Distribution of Each Neighborhood (Nepal Census)</li>
+          <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>
+          <li>
+            Air Quality Index ( data from
+            <a href="https://pollution.gov.np/">https://pollution.gov.np/</a>)
+            and Local Research
+          </li>
+        </ul>
+        <p>The Nepal Census data was extracted from Census of Nepal</p>
+        <p>Besides, we have collected the following data manually.</p>
+        <ol>
+          <li>
+            Major hospitals inside Kathmandu Valley and various data related to
+            them
+            <!-- TODO: Data from the API here -->
+            <ol type="a">
+              <li>Name</li>
+              <li>
+                Location
+                <ol type="i">
+                  <li>Direction</li>
+                  <li>Distance from Major Location</li>
+                </ol>
+              </li>
+              <li>Key Highlights of the hospital</li>
+              <li>Owner and Owner Background</li>
+              <li>Website URL</li>
+            </ol>
+          </li>
+        </ol>
+      </article>
+      <article>
+        <h2>Data Collection</h2>
+        <p>
+          To answer this business problem, the following factors have to be
+          extracted from various data sources:
+        </p>
+        <ul>
+          <li>
+            Population & Ethnic Distribution of Each Neighborhood (Nepal Census)
+          </li>
+          <li>Income Distribution of Each Neighborhood (Nepal Census)</li>
+          <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>
+          <li>
+            Distance to the hospitals from prime areas (Google Directions API)
+          </li>
+          <li>
+            Air Quality Index ( data from https://pollution.gov.np/) and Local
+            Research
+          </li>
+        </ul>
+        <p>Beside, we have collected the following data manually.</p>
+        <!-- loop here fields -->
+        <setion class="crs">
+          <h3>Top Hospitals According to our Data</h3>
+          <p>
+            These are the top hospitals computed by weighted system with data
+            available.
+          </p>
+          <table>
+            <thead>
+              <th>Hospital</th>
+              <th>Hospital</th>
+              <th>Hospital</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Everest Hospital</td>
+                <td>Everest Hospital</td>
+                <td>Everest Hospital</td>
+              </tr>
+            </tbody>
+          </table>
+        </setion>
+      </article>
+      <article>
+        <h2>Data Processing and Compilation</h2>
+        <p>
+          All the data has been fed to our proprietary Research software (
+          developed by Ombryo Pte Ltd. Singapore) The software uses GPT-3
+          Algorithm from Open AI to extract useful information from the data and
+          predict the best optimised location for the hospital. We have open
+          sourced the entire dataset on the github (
+          <a href="https://github.com/ombryo/sdasda"
+            >https://github.com/ombryo/sdasda </a
+          >)
+        </p>
+      </article>
+      <article>
+        <h2>Major Criteria and Criteria Weight</h2>
+        <p>This is decided by Investors and key stakeholders themselves</p>
+        <!-- TODO: Insert the data below in a tabular format -->
+      </article>
+      <article>
+        <h2>Conclusion</h2>
+        <p>
+          Based on the extensive research and the preferences, the location that
+          will be the ideal for building a new Hospital, is
+          <!-- TODO: Insert the data below-->
+          <strong>Lokanthali Chowk ( 23N, 87E)</strong>.
+        </p>
+        <p>
+          For this conclusion we have taken into consideration following
+          factors:
+        </p>
+        <p>The suggested location is</p>
+        <!-- TODO: Data from the API in the following unordered list -->
+        <ol type="i">
+          <li>sufficiently far away from major hospitals</li>
+        </ol>
+      </article>
+      <article>
+        <h2>Suggestion Location Summary</h2>
+        <h3>
+          <!-- TODO: Insert the data here-->Location: Lokanthali Chowk ( 23N,
+          87E) .
+        </h3>
+      </article>
+      <article>
+        <h2>Features:</h2>
+        <p>This location satisfies the following criteria:</p>
+        <!-- TODO: Insert the data here-->
+      </article>
+    </main>
+  </body>
+</html>
