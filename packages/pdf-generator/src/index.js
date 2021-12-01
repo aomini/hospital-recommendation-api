@@ -77,14 +77,14 @@ module.exports.getCloudObjectURL = (key) => {
 
 const filename = "reports";
 
-module.exports.createReport = () => {
+module.exports.createReport = (data) => {
   const selfCloudObjectURL = (key) => {
     return this.getCloudObjectURL(key);
   };
   return new Promise((res) => {
     ejs.renderFile(
       path.join(__dirname, "./template/index.ejs"),
-      { data: [] },
+      { data },
       {},
       async function (err, str) {
         return res(str);
