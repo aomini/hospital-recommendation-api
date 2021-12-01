@@ -14,6 +14,7 @@ const lookupRoutes = require("./routes/lookup");
 const lookupValueRoutes = require("./routes/lookup-value");
 const priorityRoutes = require("./routes/priority");
 const pdfRoutes = require("./routes/pdf");
+const compositeRoutes = require("./routes/composite");
 
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
@@ -30,6 +31,7 @@ app.use("/api/lookups", lookupRoutes);
 app.use("/api/lookup-values", lookupValueRoutes);
 app.use("/api/priorities", priorityRoutes);
 app.use("/api/pdf", pdfRoutes);
+app.use("/api/composite", compositeRoutes);
 
 // middleware to handle errors
 // @todo fix
