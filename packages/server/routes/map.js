@@ -79,20 +79,22 @@ router.get("/screenshot", async (req, res) => {
   await page.goto(
     `${process.env.FRONT_END_URL}/street-map?file=significant-screenshot-isoline-10&hospitals=[97,98,99]&isoline=true&time=10`
   );
-  await page.waitForResponse((response) => {
-    return response
-      .url()
-      .startsWith(
-        "https://api.geoapify.com/v1/isoline?lat=27.6972168&lon=85.33765179999999"
-      );
-  });
-  await page.waitForResponse((response) => {
-    return response
-      .url()
-      .startsWith(
-        "https://api.geoapify.com/v1/isoline?lat=27.6883782&lon=85.3335907"
-      );
-  });
+  await Promise.all([
+    await page.waitForResponse((response) => {
+      return response
+        .url()
+        .startsWith(
+          "https://api.geoapify.com/v1/isoline?lat=27.6972168&lon=85.33765179999999"
+        );
+    }),
+    await page.waitForResponse((response) => {
+      return response
+        .url()
+        .startsWith(
+          "https://api.geoapify.com/v1/isoline?lat=27.6883782&lon=85.3335907"
+        );
+    }),
+  ]);
   await exportMaps();
 
   /** Get all significant hospital isoline screenshot with time 20 */
