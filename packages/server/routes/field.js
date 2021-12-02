@@ -9,7 +9,6 @@ const router = express.Router();
 const UserAuth = require("../middlewares/UserAuth");
 
 router.get("/", UserAuth, all);
-router.get("/report", all);
 router.post("/", UserAuth, create);
 router.put("/:id", UserAuth, update);
 router.delete("/:id", UserAuth, destroy);
