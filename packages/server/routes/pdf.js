@@ -1,3 +1,4 @@
+const url = require("url");
 const express = require("express");
 const UserAuth = require("../middlewares/UserAuth");
 const { createReport } = require("@hospital-api/pdf-generator");
@@ -11,6 +12,7 @@ const {
   sequelize,
 } = require("../models");
 const { Op } = Sequelize;
+const puppeteer = require("puppeteer");
 
 const router = express.Router();
 
@@ -76,8 +78,71 @@ const getFields = async () => {
   } catch (error) {}
 };
 
+/** Base Screenshot */
+const baseScreenshot = async (page) => {
+  return await page.goto(
+    `${process.env.FRONT_END_URL}/street-map?file=base-screenshot`
+  );
+};
+
+/** Significant Screenshot */
+const significantScreenshot = async (page, hospitals) => {
+  return await page.goto(
+    `${process.env.FRONT_END_URL}/street-map?file=significant-screenshot&hospitals=[${hospitals}]`
+  );
+};
+
+/** Significant Hospital Isoline */
+const significantHospitalIsoline = async (page, time, hospitals) => {
+  return await page.goto(
+    `${process.env.FRONT_END_URL}/street-map?file=significant-screenshot-isoline-${time}&hospitals=[${hospitals}]&isoline=true&time=${time}`
+  );
+};
+
+/** Hospital Screenshot */
+const hospitalScreenshot = async (page, hospital) => {
+  return await page.goto(
+    `${process.env.FRONT_END_URL}/street-map?file=hospital-${hospital}-default&hospital=${hospital}`
+  );
+};
+
+/** Hospital Isoline */
+const hospitalIsoline = async (page, time, hospital) => {
+  return await page.goto(
+    `${process.env.FRONT_END_URL}/street-map?file=hospital-area-${hospital}-${time}-isoline&hospital=${hospital}&isoline=true&time=${time}`
+  );
+};
+
 const generatePdf = async (req, res) => {
   try {
+    // Scrape
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    const waitIsolineApi = async ({ latitude, longitude }) => {
+      return await page.waitForResponse((response) => {
+        return response
+          .url()
+          .startsWith(
+            `https://api.geoapify.com/v1/isoline?lat=${latitude}&lon=${longitude}`
+          );
+      });
+    };
+
+    const exportMaps = async () => {
+      return Promise.all([
+        await page.waitForSelector("#export"),
+        await page.click("#export"),
+        await page.waitForResponse((response) => {
+          return response.url().includes("/map/upload");
+        }),
+      ]);
+    };
+
+    /* Generate base screenshot*/
+    await baseScreenshot(page);
+    await exportMaps();
+
     // find fields
     const fields = await getFields();
     // find top hospitals
@@ -121,6 +186,14 @@ const generatePdf = async (req, res) => {
       limit: 10,
     });
 
+    const significantHospitalIds = significantHospitals.map((x) => x.id);
+    /* Generate significant screenshot */
+    await significantScreenshot(
+      page,
+      significantHospitals.map((x) => x.id)
+    );
+    await exportMaps();
+
     const hospitalDetails = significantHospitals.map((hospital) => {
       const result = Object.assign(JSON.parse(JSON.stringify(hospital)));
       const data = result.HospitalDetails.reduce((acc, inc) => {
@@ -151,6 +224,53 @@ const generatePdf = async (req, res) => {
 
       return result;
     });
+
+    let significantLatLng = [];
+    for (let hosp of hospitalDetails) {
+      /** Hospital screenshot */
+      await hospitalScreenshot(page, hosp.id);
+      await exportMaps();
+
+      const items = hosp.sortedData.find(
+        (x) => x.title.toLowerCase() === "general"
+      ).items;
+
+      let temp = {};
+      for (let iterator of items) {
+        if (["longitude", "latitude"].includes(iterator.code)) {
+          temp[iterator.code] = iterator.value;
+        }
+      }
+      significantLatLng.push(temp);
+
+      /* Generate hospital isoline for 10m */
+      await hospitalIsoline(page, 10, hosp.id);
+      await waitIsolineApi(temp);
+      await exportMaps();
+
+      /* Generate hospital isoline for 20m*/
+      await hospitalIsoline(page, 20, hosp.id);
+      await waitIsolineApi(temp);
+      await exportMaps();
+    }
+
+    /* for time 10 */
+    await significantHospitalIsoline(page, 10, significantHospitalIds);
+    await Promise.all(
+      significantLatLng.map(async (latlng) => {
+        return await waitIsolineApi(latlng);
+      })
+    );
+    await exportMaps();
+
+    /** for time 20 */
+    await significantHospitalIsoline(page, 20, significantHospitalIds);
+    await Promise.all(
+      significantLatLng.map(async (latlng) => {
+        return await waitIsolineApi(latlng);
+      })
+    );
+    await exportMaps();
 
     const data = await createReport({
       significantHospitals,
