@@ -1,9 +1,13 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: "../../.env",
+});
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const morgan = require("morgan");
 const { sequelize } = require("./models");
+const multer = require("multer");
+const upload = multer();
 // const errorMiddleware = require("./middlewares/errors");
 
 const userRoutes = require("./routes/user");
@@ -15,12 +19,14 @@ const lookupValueRoutes = require("./routes/lookup-value");
 const priorityRoutes = require("./routes/priority");
 const pdfRoutes = require("./routes/pdf");
 const compositeRoutes = require("./routes/composite");
+const mapRoutes = require("./routes/map");
 
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
 
 app.use(cors());
 app.use(bodyParser.json());
+// app.use(upload.array());
 app.use(morgan("tiny"));
 
 app.use("/api/user", userRoutes);
@@ -32,6 +38,7 @@ app.use("/api/lookup-values", lookupValueRoutes);
 app.use("/api/priorities", priorityRoutes);
 app.use("/api/pdf", pdfRoutes);
 app.use("/api/composite", compositeRoutes);
+app.use("/api/map", mapRoutes);
 
 // middleware to handle errors
 // @todo fix
