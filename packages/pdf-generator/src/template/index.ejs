@@ -8,7 +8,7 @@
   <title>Hospital Analytics Report</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     html,
     * {
@@ -367,6 +367,29 @@
     .cover-page-header .cover-page-footer h4 {
       margin: 0;
     }
+
+    figcaption {
+      text-align: center;
+    }
+
+    figcaption i {
+      font-size: 12px !important;
+      font-weight: 300;
+      color: #333;
+
+    }
+
+    .pb-after-always {
+      page-break-after: always;
+    }
+
+    .pb-before-always {
+      page-break-before: always;
+    }
+
+    .pb-inside-avoid {
+      page-break-inside: avoid;
+    }
   </style>
 </head>
 
@@ -530,8 +553,37 @@
           </ol>
         </li>
       </ol>
+
+      <section class="pb-before-always">
+        <h2>Data Processing and Compilation
+        </h2>
+        <p>
+          <!-- todo: add description -->
+        </p>
+      </section>
+      <section>
+        <h2>Major Criteria and Criteria Weight</h2>
+        <p>
+          <!-- todo: add description -->
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>SN</th>
+              <th>Main Criteria</th>
+              <th>Main Weight</th>
+              <th>Sub Criteria</th>
+              <th>Sub Criteria Weight</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- loop -->
+          </tbody>
+        </table>
+      </section>
       <!-- loop here fields -->
-      <setion class="crs">
+      <section class="pb-before-always">
         <h3>Most Significant Hospitals According to our Data</h3>
         <p>
           These are the top 10 hospitals computed by weighted system with data
@@ -567,89 +619,160 @@
               <%})%>
           </tbody>
         </table>
-      </setion>
-      <section>
-        <h2>Significant Hospital Details</h2>
-        <p>Below are the manaully inserted data for hospitals that determined the most significant hospitals available
-          in kathmandu.These data were given some weights to be used in our weighted system. However, the collected data
-          might not be utterly precised. </p>
-
-        <%data.hospitalDetails.forEach((hospital)=>{%>
-          <% hospital.sortedData.forEach(data=>{%>
-            <h3>
-              <u>
-                <%=data.title%>
-              </u>
-            </h3>
-            <table>
-              <%data.items.forEach(item=>{%>
-                <tr>
-                  <td>
-                    <%=item.title%>
-                  </td>
-                  <td>
-                    <% if(item.code==="name_of_hospital" ){%>
-                      <h4 style="margin: 0;">
-                        <%=item.value%>
-                      </h4>
-                      <%}else{%>
-                        <span>
-                          <%=item.value%>
-                        </span>
-                        <%}%>
-                  </td>
-                </tr>
-                <%})%>
-            </table>
-            <%})})%>
       </section>
-    </article>
-    <article>
-      <h2>Data Processing and Compilation</h2>
-      <p>
-        All the data has been fed to our proprietary Research software (
-        developed by Ombryo Pte Ltd. Singapore) The software uses GPT-3
-        Algorithm from Open AI to extract useful information from the data and
-        predict the best optimised location for the hospital. We have open
-        sourced the entire dataset on the github (
-        <a href="https://github.com/ombryo/sdasda">https://github.com/ombryo/sdasda </a>)
-      </p>
-    </article>
-    <article>
-      <h2>Major Criteria and Criteria Weight</h2>
-      <p>This is decided by Investors and key stakeholders themselves</p>
-      <!-- TODO: Insert the data below in a tabular format -->
-    </article>
-    <article>
-      <h2>Conclusion</h2>
-      <p>
-        Based on the extensive research and the preferences, the location that
-        will be the ideal for building a new Hospital, is
-        <!-- TODO: Insert the data below-->
-        <strong>Lokanthali Chowk ( 23N, 87E)</strong>.
-      </p>
-      <p>
-        For this conclusion we have taken into consideration following
-        factors:
-      </p>
-      <p>The suggested location is</p>
-      <!-- TODO: Data from the API in the following unordered list -->
-      <ol type="i">
-        <li>sufficiently far away from major hospitals</li>
-      </ol>
-    </article>
-    <article>
-      <h2>Suggestion Location Summary</h2>
-      <h3>
-        <!-- TODO: Insert the data here-->Location: Lokanthali Chowk ( 23N,
-        87E) .
-      </h3>
-    </article>
-    <article>
-      <h2>Features:</h2>
-      <p>This location satisfies the following criteria:</p>
-      <!-- TODO: Insert the data here-->
-    </article>
+      <section class="pb-before-always">
+        <h4>Significant hospitals inside kathmandu</h4>
+        <figure>
+          <img src="<%=process.env.IMAGE_BASE_URL%>/significant-screenshot.png" alt="significant hospital">
+          <figcaption>
+            <i>
+              Image of Significant hospitals in kathmandu
+            </i>
+          </figcaption>
+        </figure>
+      </section>
+      <section>
+        <figure>
+          <img src="<%=process.env.IMAGE_BASE_URL%>/significant-screenshot-isoline-10.png"
+            alt="significant hospital isoline within 10 minutes">
+          <figcaption>
+            <i>
+              Isoline image of Significant hospitals within 10 minutes
+            </i>
+          </figcaption>
+        </figure>
+      </section>
+      <section>
+        <figure>
+          <img src="<%=process.env.IMAGE_BASE_URL%>/significant-screenshot-isoline-20.png"
+            alt="significant hospital isoline within 20 minutes">
+          <figcaption>
+            <i>
+              Isoline image of Significant hospitals within 10 minutes
+            </i>
+          </figcaption>
+        </figure>
+      </section>
+      <article>
+        <section class="pb-before-always">
+          <h2>Significant Hospital Details</h2>
+          <p>Below are the manaully inserted data for hospitals that determined the most significant hospitals available
+            in kathmandu.These data were given some weights to be used in our weighted system. However, the collected
+            data
+            might not be utterly precised. </p>
+
+          <%data.hospitalDetails.forEach((hospital,index)=>{%>
+            <div class="<%=index!==0 ?'pb-before-always':'' %>">
+              <h2>
+                <%=index+1%>.
+                  <%=hospital.hospitalName%>
+              </h2>
+              <figure>
+                <img src=" <%=process.env.IMAGE_BASE_URL%>/hospital-<%=hospital.id%>-default.png"
+                  alt="hospital-<%=hospital.id%>">
+                <figcaption>
+                  <i>
+                    <%=hospital.hospitalName%>
+                  </i>
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="<%=process.env.IMAGE_BASE_URL%>/hospital-area-<%=hospital.id%>-10-isoline.png"
+                  alt="hospital-<%=hospital.id%>">
+                <figcaption>
+                  <i>
+                    <%=hospital.hospitalName%> isoline image within 10 minutes
+                  </i>
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="<%=process.env.IMAGE_BASE_URL%>/hospital-area-<%=hospital.id%>-20-isoline.png"
+                  alt="hospital-<%=hospital.id%>">
+                <figcaption>
+                  <i>
+                    <%=hospital.hospitalName%> isoline image within 20 minutes
+                  </i>
+                </figcaption>
+              </figure>
+              <% hospital.sortedData.forEach(data=>{%>
+                <section class="pb-inside-avoid">
+                  <h3>
+                    <u>
+                      <%=data.title%>
+                    </u>
+                  </h3>
+                  <table>
+                    <%data.items.forEach(item=>{%>
+                      <tr>
+                        <td>
+                          <%=item.title%>
+                        </td>
+                        <td>
+                          <% if(item.code==="name_of_hospital" ){%>
+                            <h4 style="margin: 0;">
+                              <%=item.value%>
+                            </h4>
+                            <%}else{%>
+                              <span>
+                                <%=item.value%>
+                              </span>
+                              <%}%>
+                        </td>
+                      </tr>
+                      <%})%>
+                  </table>
+                </section>
+                <%})%>
+            </div>
+            <%})%>
+        </section>
+      </article>
+      <article>
+        <h2>Data Processing and Compilation</h2>
+        <p>
+          All the data has been fed to our proprietary Research software (
+          developed by Ombryo Pte Ltd. Singapore) The software uses GPT-3
+          Algorithm from Open AI to extract useful information from the data and
+          predict the best optimised location for the hospital. We have open
+          sourced the entire dataset on the github (
+          <a href="https://github.com/ombryo/sdasda">https://github.com/ombryo/sdasda </a>)
+        </p>
+      </article>
+      <article>
+        <h2>Major Criteria and Criteria Weight</h2>
+        <p>This is decided by Investors and key stakeholders themselves</p>
+        <!-- TODO: Insert the data below in a tabular format -->
+      </article>
+      <article>
+        <h2>Conclusion</h2>
+        <p>
+          Based on the extensive research and the preferences, the location that
+          will be the ideal for building a new Hospital, is
+          <!-- TODO: Insert the data below-->
+          <strong>Lokanthali Chowk ( 23N, 87E)</strong>.
+        </p>
+        <p>
+          For this conclusion we have taken into consideration following
+          factors:
+        </p>
+        <p>The suggested location is</p>
+        <!-- TODO: Data from the API in the following unordered list -->
+        <ol type="i">
+          <li>sufficiently far away from major hospitals</li>
+        </ol>
+      </article>
+      <article>
+        <h2>Suggestion Location Summary</h2>
+        <h3>
+          <!-- TODO: Insert the data here-->Location: Lokanthali Chowk ( 23N,
+          87E) .
+        </h3>
+      </article>
+      <article>
+        <h2>Features:</h2>
+        <p>This location satisfies the following criteria:</p>
+        <!-- TODO: Insert the data here-->
+      </article>
   </main>
 </body>
 

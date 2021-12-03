@@ -1,4 +1,5 @@
 const url = require("url");
+const html_to_pdf = require("html-pdf-node");
 const express = require("express");
 const UserAuth = require("../middlewares/UserAuth");
 const { createReport } = require("@hospital-api/pdf-generator");
@@ -60,22 +61,38 @@ const getFields = async () => {
     });
 
     await Promise.all(promise).then((res) => {
-      fields = fields.map(({ name, field_items, meta }) => {
-        const newData = { name };
+      fields = fields.map(({ name, id, field_items, meta }) => {
+        const newData = { id, name };
         const { multiple, fromLookup, code } = meta || {};
         if (multiple && fromLookup) {
           const lookupData = res.find((x) => x.code === code);
           newData.field_items = lookupData.LookupValues.map((x) => ({
             title: x.label,
+            id: x.id,
           }));
         } else {
-          newData.field_items = field_items.map(({ title }) => ({ title }));
+          newData.field_items = field_items.map(({ id, title }) => ({
+            id,
+            title,
+          }));
         }
         return newData;
       });
     });
     return fields;
   } catch (error) {}
+};
+
+/** Field Weight */
+const getFieldWeights = async () => {
+  const data = await sequelize.query(`
+     select *,
+      (select sum(weight) from priorities 
+        where "field_item_id" 
+        in (select id from field_items where field_id = fields.id)) 
+      from fields
+  `);
+  return data;
 };
 
 /** Base Screenshot */
@@ -139,9 +156,11 @@ const generatePdf = async (req, res) => {
       ]);
     };
 
-    /* Generate base screenshot*/
-    await baseScreenshot(page);
-    await exportMaps();
+    if (process.env.GENERATE_IMAGE === "true") {
+      /* Generate base screenshot*/
+      await baseScreenshot(page);
+      await exportMaps();
+    }
 
     // find fields
     const fields = await getFields();
@@ -187,15 +206,23 @@ const generatePdf = async (req, res) => {
     });
 
     const significantHospitalIds = significantHospitals.map((x) => x.id);
-    /* Generate significant screenshot */
-    await significantScreenshot(
-      page,
-      significantHospitals.map((x) => x.id)
-    );
-    await exportMaps();
+
+    if (process.env.GENERATE_IMAGE === "true") {
+      /* Generate significant screenshot */
+      await significantScreenshot(
+        page,
+        significantHospitals.map((x) => x.id)
+      );
+      await exportMaps();
+    }
+
+    const fieldWeights = await getFieldWeights();
 
     const hospitalDetails = significantHospitals.map((hospital) => {
       const result = Object.assign(JSON.parse(JSON.stringify(hospital)));
+      result.hospitalName = hospital.HospitalDetails.find(
+        (x) => x.FieldItem.code === "name_of_hospital"
+      ).value.value;
       const data = result.HospitalDetails.reduce((acc, inc) => {
         const item = inc.FieldItem;
         const field = item.Field;
@@ -206,6 +233,7 @@ const generatePdf = async (req, res) => {
           value: inc.value.value,
           code: item.code,
         };
+
         if (curr) {
           acc[field.meta.code] = { ...curr, items: [...curr.items, newData] };
         } else {
@@ -215,6 +243,7 @@ const generatePdf = async (req, res) => {
             items: [newData],
           };
         }
+
         return acc;
       }, {});
 
@@ -227,9 +256,11 @@ const generatePdf = async (req, res) => {
 
     let significantLatLng = [];
     for (let hosp of hospitalDetails) {
-      /** Hospital screenshot */
-      await hospitalScreenshot(page, hosp.id);
-      await exportMaps();
+      if (process.env.GENERATE_IMAGE === "true") {
+        /** Hospital screenshot */
+        await hospitalScreenshot(page, hosp.id);
+        await exportMaps();
+      }
 
       const items = hosp.sortedData.find(
         (x) => x.title.toLowerCase() === "general"
@@ -243,34 +274,37 @@ const generatePdf = async (req, res) => {
       }
       significantLatLng.push(temp);
 
-      /* Generate hospital isoline for 10m */
-      await hospitalIsoline(page, 10, hosp.id);
-      await waitIsolineApi(temp);
-      await exportMaps();
+      if (process.env.GENERATE_IMAGE === "true") {
+        /* Generate hospital isoline for 10m */
+        await hospitalIsoline(page, 10, hosp.id);
+        await waitIsolineApi(temp);
+        await exportMaps();
 
-      /* Generate hospital isoline for 20m*/
-      await hospitalIsoline(page, 20, hosp.id);
-      await waitIsolineApi(temp);
-      await exportMaps();
+        /* Generate hospital isoline for 20m*/
+        await hospitalIsoline(page, 20, hosp.id);
+        await waitIsolineApi(temp);
+        await exportMaps();
+      }
     }
 
-    /* for time 10 */
-    await significantHospitalIsoline(page, 10, significantHospitalIds);
-    await Promise.all(
-      significantLatLng.map(async (latlng) => {
-        return await waitIsolineApi(latlng);
-      })
-    );
-    await exportMaps();
-
-    /** for time 20 */
-    await significantHospitalIsoline(page, 20, significantHospitalIds);
-    await Promise.all(
-      significantLatLng.map(async (latlng) => {
-        return await waitIsolineApi(latlng);
-      })
-    );
-    await exportMaps();
+    if (process.env.GENERATE_IMAGE === "true") {
+      /* for time 10 */
+      await significantHospitalIsoline(page, 10, significantHospitalIds);
+      await Promise.all(
+        significantLatLng.map(async (latlng) => {
+          return await waitIsolineApi(latlng);
+        })
+      );
+      await exportMaps();
+      /** for time 20 */
+      await significantHospitalIsoline(page, 20, significantHospitalIds);
+      await Promise.all(
+        significantLatLng.map(async (latlng) => {
+          return await waitIsolineApi(latlng);
+        })
+      );
+      await exportMaps();
+    }
 
     const data = await createReport({
       significantHospitals,
@@ -278,7 +312,16 @@ const generatePdf = async (req, res) => {
       hospitalDetails,
     });
 
-    res.send(data);
+    /**Sends pdf */
+    html_to_pdf
+      .generatePdf({ content: data }, { format: "A4" })
+      .then((pdfBuffer) => {
+        res.contentType("application/pdf");
+        return res.send(pdfBuffer);
+      });
+
+    /**Sends html */
+    // res.send();
   } catch (e) {
     res.status(e.code || 500).json({
       success: false,
