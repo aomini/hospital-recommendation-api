@@ -87,8 +87,7 @@ module.exports.createReport = (data) => {
       { data },
       {},
       async function (err, str) {
-        console.log({ pdfError: err });
-        return res(str);
+        // return res(str);
         const pdfBytes = await printPdf(filename, str);
         var params = {
           Bucket: process.env.BUCKET_NAME,
