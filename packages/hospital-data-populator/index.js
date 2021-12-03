@@ -11,6 +11,8 @@ const {
 } = require("@hospital-api/server/models");
 const getDetails = require("./googleapis/get-details");
 const getDirections = require("./googleapis/get-directions");
+const getFakeValues = require("./fakeData");
+const buildings = require("./buildings");
 
 const { Op } = Sequelize;
 
@@ -42,24 +44,27 @@ const main = async () => {
       username: "rootuser",
     },
   });
-  const fields = await FieldItem.findAll({
-    where: {
-      code: {
-        [Op.in]: [
-          "name_of_hospital",
-          "address",
-          "phone_number",
-          "longitude",
-          "latitude",
-          "website",
-          "distance_from_airport",
-          "distance_from_koteshwor",
-          "distance_from_thankot",
-          "distance_from_sanga",
-        ],
-      },
-    },
-  });
+  const fields = await FieldItem
+    .findAll
+    //   {
+    //   where: {
+    //     code: {
+    //       [Op.in]: [
+    //         "name_of_hospital",
+    //         "address",
+    //         "phone_number",
+    //         "longitude",
+    //         "latitude",
+    //         "website",
+    //         "distance_from_airport",
+    //         "distance_from_koteshwor",
+    //         "distance_from_thankot",
+    //         "distance_from_sanga",
+    //       ],
+    //     },
+    //   },
+    // }
+    ();
 
   await sequelize.transaction(async (t) => {
     try {
@@ -68,6 +73,27 @@ const main = async () => {
         console.log(`processing ${parseInt(key) + 1}. ${name}}`);
 
         let { reviews, ...rest } = await getDetails(place_id);
+
+        rest = {
+          ...rest,
+          ...(await getFakeValues()),
+          // buildings_1km_radius: await buildings(
+          //   rest.latitude,
+          //   rest.longitude,
+          //   1
+          // ),
+          // buildings_3km_radius: await buildings(
+          //   rest.latitude,
+          //   rest.longitude,
+          //   3
+          // ),
+
+          // buildings_5km_radius: await buildings(
+          //   rest.latitude,
+          //   rest.longitude,
+          //   5
+          // ),
+        };
 
         const originEntries = Object.entries(origins);
         for (let originKey in originEntries) {

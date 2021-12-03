@@ -12,7 +12,7 @@ const seeder = spawn("npm", ["run", "seed:all"]);
 // const fieldManager = spawn("node", ["setup-scripts/field/fields-manager.js"]);
 
 seeder.stdout.on("close", () => {
-  exec("node setup-scripts/field/fields-manager.js", (err, stdout, stderr) => {
+  exec(`node ${__dirname}/field/fields-manager.js`, (err, stdout, stderr) => {
     if (err) {
       console.log(`error: ${err.message}`);
       return;

@@ -82,7 +82,8 @@ const fields = [
       {
         title: "Traffic Congestion",
         code: "traffic_congestion",
-        type: "text",
+        type: "radio",
+        single: true,
       },
       {
         title: "Less Air Pollution",
@@ -203,7 +204,8 @@ const fields = [
   {
     section: "Clinical Laboratory Equipments",
     code: "clinical_laboratory_equipments",
-    parentSection: "Infrastructure and equipments",
+    /** parent section is for children */
+    // parentSection: "Infrastructure and equipments",
     lookup_code: "clinical_laboratory_equipments",
     fromLookup: true,
     multiple: true,
@@ -421,7 +423,7 @@ const fields = [
       {
         title: "Restaurants / Convenience Store Nearby",
         subtitle: "100m Radius",
-        code: "atm_machines_with_200m_radius",
+        code: "restaurants_with_100m_radius",
         type: "number",
       },
     ],
@@ -463,13 +465,18 @@ const fields = [
     code: "miscellaneous",
     items: [
       {
-        title: "Population Density-1KM Radius",
-        code: "population_density_1km_radius",
+        title: "Buildings 1KM Radius",
+        code: "buildings_1km_radius",
         type: "number",
       },
       {
-        title: "Population Density-3KM Radius",
-        code: "population_density_3km_radius",
+        title: "Buildings 3KM Radius",
+        code: "buildings_3km_radius",
+        type: "number",
+      },
+      {
+        title: "Buildings 5KM Radius",
+        code: "buildings_5km_radius",
         type: "number",
       },
       {
@@ -479,14 +486,10 @@ const fields = [
         invisible: true,
       },
       {
-        title: "Growing Population within 3KM Radius",
-        code: "growing_population_3km_radius",
-        type: "number",
-      },
-      {
         title: "Space for Growth and Expansion",
         code: "space_for_growth_and_expansion",
-        type: "number",
+        type: "radio",
+        single: true,
       },
       {
         title: "Helipad",
@@ -528,7 +531,8 @@ const fields = [
         title: "pollution",
         subtitle: "Risk of Pollution and Contaminated Land",
         code: "environmental_pollution",
-        type: "number",
+        type: "radio",
+        single: true,
       },
       {
         title: "Harm to Historical and Cultural Assets",
