@@ -351,6 +351,7 @@ const generatePdf = async (req, res) => {
       fields,
       hospitalDetails,
       weights,
+      foundMatch: [1, 2],
     });
 
     /**Sends pdf */
@@ -362,7 +363,8 @@ const generatePdf = async (req, res) => {
     //   });
 
     /**Sends html */
-    res.send(`<a href="${data}" download>download</a>`);
+
+    res.send(data);
   } catch (e) {
     res.status(e.code || 500).json({
       success: false,

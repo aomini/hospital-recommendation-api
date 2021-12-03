@@ -759,36 +759,50 @@
         <p>This is decided by Investors and key stakeholders themselves</p>
         <!-- TODO: Insert the data below in a tabular format -->
       </article>
-      <article>
-        <h2>Conclusion</h2>
-        <p>
-          Based on the extensive research and the preferences, the location that
-          will be the ideal for building a new Hospital, is
-          <!-- TODO: Insert the data below-->
-          <strong>Lokanthali Chowk ( 23N, 87E)</strong>.
-        </p>
-        <p>
-          For this conclusion we have taken into consideration following
-          factors:
-        </p>
-        <p>The suggested location is</p>
-        <!-- TODO: Data from the API in the following unordered list -->
-        <ol type="i">
-          <li>sufficiently far away from major hospitals</li>
-        </ol>
-      </article>
-      <article>
-        <h2>Suggestion Location Summary</h2>
-        <h3>
-          <!-- TODO: Insert the data here-->Location: Lokanthali Chowk ( 23N,
-          87E) .
-        </h3>
-      </article>
-      <article>
-        <h2>Features:</h2>
-        <p>This location satisfies the following criteria:</p>
-        <!-- TODO: Insert the data here-->
-      </article>
+      <h2>Conclusion</h2>
+      <%if(data.foundMatch){%>
+        <article>
+          <p>
+            Based on the extensive research and the preferences, the location that
+            will be the ideal for building a new Hospital, is
+            <!-- TODO: Insert the data below-->
+            <strong>
+              <%=data.foundMatch.join(", ")%>
+            </strong>.
+          </p>
+          <p>
+            For this conclusion we have taken into consideration following
+            factors:
+          </p>
+          <p>The suggested location is</p>
+          <!-- TODO: Data from the API in the following unordered list -->
+          <ol type=" i">
+                <li>sufficiently far away from major hospitals</li>
+                <li>Suggested Location has more than average population density of 1KM radius of all major hospitals
+                </li>
+                <li>Suggested Location has very high potential of population growth ( 5KM radius ko population density
+                  chai aru tira vanda
+                  kam, 1KM chai ekdam densely populated xa vane we can predict 5KM area ma there are open spaces that
+                  can see huge
+                  population growth in coming future)</li>
+                <li>Suggested Hospital is on strategic Location</li>
+                </ol>
+        </article>
+        <article>
+          <h2>Suggestion Location Summary</h2>
+          <h3>
+            <!-- TODO: Insert the data here-->Location:
+            <strong>
+              <%=data.foundMatch.join(", ")%>
+            </strong>
+          </h3>
+        </article>
+       
+        <%}else{%>
+        <article>
+          <p>None of the locations provided are ideal for opening a hospital in kathmandu</p>
+        </article>
+        <%}%>
   </main>
 </body>
 
