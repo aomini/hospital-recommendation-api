@@ -16,6 +16,69 @@ const {
 } = require("../models");
 const { Op } = Sequelize;
 const puppeteer = require("puppeteer");
+const queryOverpass = require("query-overpass");
+const axios = require("axios");
+const rawPossibleHospitals = require("../possible-hospitals");
+
+const origins = {
+  // Tribhuwan internation airport
+  distance_from_airport: "27.701803, 85.353394",
+  // Koteshwor
+  distance_from_koteshwor: "27.678775, 85.349625",
+  // Thankot
+  distance_from_thankot: "27.686296, 85.201892",
+  // Sanga
+  distance_from_sanga: "27.634265, 85.484711",
+};
+
+const getDirections = ({ origin, destination, mode }) => {
+  return axios
+    .get("https://maps.googleapis.com/maps/api/directions/json", {
+      params: {
+        key: "AIzaSyC5Soc1WHnZDKY6Y_bjBC8vuAtpkp8CxFc",
+        // lat,lng of tribhuwan international airport
+        origin,
+        destination,
+        mode,
+      },
+    })
+    .then((resp) => {
+      const { routes } = resp.data;
+      const { legs } = routes[0];
+      return [legs[0].distance.value, legs[0].duration.value];
+    });
+};
+
+const sleep = () => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res();
+    }, 10000);
+  });
+};
+
+const getBuildings = async (lat, lng, km = 1) => {
+  const meters = km * 1000;
+  const query = `
+    [out:json];
+    (              
+    node["building"](around:${meters},${lat}, ${lng} );
+    way["building"](around:${meters}, ${lat}, ${lng});
+    relation["building"](around:${meters}, ${lat}, ${lng});
+    );
+    out body;
+    >;
+    out skel qt;
+  `;
+  return new Promise((res) => {
+    queryOverpass(query, (err, data) => {
+      if (err) {
+        console.log("@@@@@@", { lat, lng, km }, err);
+      }
+      res(data.features.length);
+    });
+  });
+};
 
 const router = express.Router();
 
@@ -341,13 +404,177 @@ const generatePdf = async (req, res) => {
       return [...acc, ...d];
     }, []);
 
+    // Distances from major places
+    // test-cases test cases
+    const testCoordinates = Object.values(rawPossibleHospitals).map((x) => {
+      return [x.lat, x.lng];
+    });
+    let distancePassedCoordinates = [];
+    for (let j = 0; j < testCoordinates.length; j++) {
+      const [lat, lng] = testCoordinates[j];
+
+      const originEntries = Object.entries(origins);
+      let distanceSum = 0;
+      for (let originKey in originEntries) {
+        const [k, v] = originEntries[originKey];
+        const [distance] = await getDirections({
+          origin: v,
+          destination: `${lat},${lng}`,
+          mode: "driving",
+        });
+        distanceSum += distance;
+      }
+      const avgDistance = Math.floor(distanceSum / 4000);
+      if (avgDistance <= 12) {
+        distancePassedCoordinates.push([lat, lng]);
+      }
+    }
+
+    // Is far away from significant hospitals
+    let farAwayFromSignificantHospitals = [];
+    for (let k = 0; k < distancePassedCoordinates.length; k++) {
+      const [lat, lng] = distancePassedCoordinates[k];
+
+      for (let l = 0; l < significantLatLng.length; l++) {
+        const { latitude, longitude } = significantLatLng[l];
+        const [distance, duration] = await getDirections({
+          origin: `${latitude}, ${longitude}`,
+          destination: `${lat},${lng}`,
+          mode: "driving",
+        });
+        if (duration < 600) {
+          break;
+        } else {
+          farAwayFromSignificantHospitals = [[lat, lng]];
+        }
+      }
+    }
+
+    // significant hospitals in 1km
+    const building_1k_id = await FieldItem.findOne({
+      where: {
+        code: "buildings_1km_radius",
+      },
+    });
+    const details1Km = await HospitalDetail.findAll({
+      attributes: [[sequelize.json("value.value"), "value"]],
+      where: {
+        hospital_id: {
+          [Op.in]: significantHospitalIds,
+        },
+        field_item_id: building_1k_id.id,
+      },
+    });
+    const values = details1Km.map((x) => (x.value ? parseInt(x.value) : 0));
+    const avgBuildingsIn1Km = Math.floor(
+      values.reduce((a, i) => {
+        return a + i;
+      }, 0) / 10
+    );
+
+    // Significant hospitals in 3k
+    const building_3k_id = await FieldItem.findOne({
+      where: {
+        code: "buildings_3km_radius",
+      },
+    });
+    const details3Km = await HospitalDetail.findAll({
+      attributes: [[sequelize.json("value.value"), "value"]],
+      where: {
+        hospital_id: {
+          [Op.in]: significantHospitalIds,
+        },
+        field_item_id: building_3k_id.id,
+      },
+    });
+    const values3Km = details3Km.map((x) => (x.value ? parseInt(x.value) : 0));
+    const avgBuildingsIn3Km = Math.floor(
+      values3Km.reduce((a, i) => {
+        return a + i;
+      }, 0) / 10
+    );
+
+    // Significant hospital in 5k
+    const building_5k_id = await FieldItem.findOne({
+      where: {
+        code: "buildings_5km_radius",
+      },
+    });
+    const details5Km = await HospitalDetail.findAll({
+      attributes: [[sequelize.json("value.value"), "value"]],
+      where: {
+        hospital_id: {
+          [Op.in]: significantHospitalIds,
+        },
+        field_item_id: building_5k_id.id,
+      },
+    });
+    const values5Km = details5Km.map((x) => (x.value ? parseInt(x.value) : 0));
+    const avgBuildingsIn5Km = Math.floor(
+      values5Km.reduce((a, i) => {
+        return a + i;
+      }, 0) / 10
+    );
+
+    const idealPopulationIn1Km = avgBuildingsIn1Km;
+    const idealPopulationIn3Km = Math.floor(avgBuildingsIn3Km * 0.6);
+    const idealPopulationIn5Km = Math.floor(avgBuildingsIn5Km * 0.5);
+
+    // Test-cases for testing buildings
+    let foundMatch = null;
+    for (let i = 0; i < farAwayFromSignificantHospitals.length; i++) {
+      const [testLat, testLng] = farAwayFromSignificantHospitals[i];
+      const testBuildingIn1Km = await getBuildings(testLat, testLng, 1);
+
+      await sleep();
+
+      const testBuildingIn3Km = await getBuildings(testLat, testLng, 1);
+      await sleep();
+      const testBuildingIn5Km = await getBuildings(testLat, testLng, 1);
+
+      if (
+        testBuildingIn1Km <= idealPopulationIn1Km &&
+        testBuildingIn3Km <= idealPopulationIn3Km &&
+        testBuildingIn5Km <= idealPopulationIn5Km
+      ) {
+        foundMatch = [testLat, testLng];
+      }
+    }
+
     const data = await createReport({
       significantHospitals,
       fields,
       hospitalDetails,
       weights,
+      foundMatch,
     });
 
+    // const distanceFields = await FieldItem.findAll({
+    //   where: {
+    //     code: {
+    //       [Op.in]: [
+    //         "distance_from_thankot",
+    //         "distance_from_koteshwor",
+    //         "distance_from_sanga",
+    //         "distance_from_airport",
+    //       ],
+    //     },
+    //   },
+    // });
+    // const distanceFieldIds = distanceFields.map((x) => x.id);
+
+    // const significantHospitalDistanceDetails = await HospitalDetail.findAll({
+    //   where: {
+    //     field_item_id: {
+    //       [Op.in]: distanceFieldIds,
+    //     },
+    //     hospital_id: {
+    //       [Op.in]: significantHospitalIds,
+    //     },
+    //   },
+    // });
+
+    // console.log(significantHospitalDistanceDetails[0]);
     /**Sends pdf */
     // html_to_pdf
     //   .generatePdf({ content: data }, { format: "A4" })
