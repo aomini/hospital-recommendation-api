@@ -53,7 +53,7 @@ const sleep = () => {
   return new Promise((res) => {
     setTimeout(() => {
       res();
-    }, 10000);
+    }, 15000);
   });
 };
 
