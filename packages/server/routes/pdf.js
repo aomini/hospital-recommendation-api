@@ -531,6 +531,7 @@ const generatePdf = async (req, res) => {
       const testBuildingIn3Km = await getBuildings(testLat, testLng, 1);
       await sleep();
       const testBuildingIn5Km = await getBuildings(testLat, testLng, 1);
+      await sleep();
 
       if (
         testBuildingIn1Km <= idealPopulationIn1Km &&
