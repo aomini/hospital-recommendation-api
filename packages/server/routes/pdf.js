@@ -7,6 +7,8 @@ const {
   Hospital,
   HospitalDetail,
   Field,
+  Priority,
+  LookupValues,
   FieldItem,
   Lookup,
   Sequelize,
@@ -39,7 +41,7 @@ const getFields = async () => {
           [Op.is]: null,
         },
       },
-      include: { all: true, nested: true },
+      include: [{ all: true, nested: true }],
       order: [
         ["order", "ASC"],
         [{ model: FieldItem, as: "field_items" }, "order", "asc"],
@@ -81,6 +83,12 @@ const getFields = async () => {
     });
     return fields;
   } catch (error) {}
+};
+
+const getPriority = async () => {
+  return await Priority.findAll({
+    attributes: ["id", "field_item_id", "weight", "order"],
+  });
 };
 
 /** Field Weight */
@@ -216,7 +224,8 @@ const generatePdf = async (req, res) => {
       await exportMaps();
     }
 
-    const fieldWeights = await getFieldWeights();
+    const fieldWeights = (await getFieldWeights())[0];
+    const priorities = await getPriority();
 
     const hospitalDetails = significantHospitals.map((hospital) => {
       const result = Object.assign(JSON.parse(JSON.stringify(hospital)));
@@ -306,22 +315,49 @@ const generatePdf = async (req, res) => {
       await exportMaps();
     }
 
+    const weights = fields.reduce((acc, itr) => {
+      const d = itr.field_items.map((x, index) => {
+        const data = {};
+        const fields = [];
+        data.meta = {
+          total: itr.field_items.length,
+        };
+        if (index === 0) {
+          fields.push({ sn: itr.id });
+          fields.push({ title: itr.name });
+          fields.push({
+            weight: fieldWeights.find((y) => y.id === itr.id).sum,
+          });
+        }
+        const p = priorities.find((y) => y.field_item_id === x.id);
+        fields.push({ itemTitle: x.title });
+        fields.push({ itemWeight: p?.weight });
+        fields.push({ itemOrder: p?.order });
+        data.fields = fields;
+
+        return data;
+      });
+
+      return [...acc, ...d];
+    }, []);
+
     const data = await createReport({
       significantHospitals,
       fields,
       hospitalDetails,
+      weights,
     });
 
     /**Sends pdf */
-    html_to_pdf
-      .generatePdf({ content: data }, { format: "A4" })
-      .then((pdfBuffer) => {
-        res.contentType("application/pdf");
-        return res.send(pdfBuffer);
-      });
+    // html_to_pdf
+    //   .generatePdf({ content: data }, { format: "A4" })
+    //   .then((pdfBuffer) => {
+    //     res.contentType("application/pdf");
+    //     return res.send(pdfBuffer);
+    //   });
 
     /**Sends html */
-    // res.send();
+    res.send(data);
   } catch (e) {
     res.status(e.code || 500).json({
       success: false,

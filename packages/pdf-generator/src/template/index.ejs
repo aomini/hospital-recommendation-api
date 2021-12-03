@@ -273,7 +273,7 @@
       padding-bottom: calc(0.8125rem - 1px);
     }
 
-    th:first-child,
+    /* th:first-child,
     td:first-child {
       padding-left: 0;
     }
@@ -281,7 +281,7 @@
     th:last-child,
     td:last-child {
       padding-right: 0;
-    }
+    } */
 
     h3,
     h4,
@@ -389,6 +389,10 @@
 
     .pb-inside-avoid {
       page-break-inside: avoid;
+    }
+
+    .vertical-top {
+      vertical-align: top;
     }
   </style>
 </head>
@@ -561,7 +565,7 @@
           <!-- todo: add description -->
         </p>
       </section>
-      <section>
+      <section class="pb-before-always">
         <h2>Major Criteria and Criteria Weight</h2>
         <p>
           <!-- todo: add description -->
@@ -578,7 +582,16 @@
             </tr>
           </thead>
           <tbody>
-            <!-- loop -->
+            <%data.weights.forEach((x)=>{%>
+              <tr>
+                <%x.fields.forEach((y,index)=>{%>
+                  <td rowspan="<%=['sn','title','weight'].includes(Object.keys(y)[0])? x.meta.total:1%>"
+                    class="<%=['sn','title','weight'].includes(Object.keys(y)[0])? 'vertical-top p-0':null%>">
+                    <%=Object.values(y)[0]%>
+                  </td>
+                  <%})%>
+              </tr>
+              <%})%>
           </tbody>
         </table>
       </section>
