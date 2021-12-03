@@ -470,44 +470,48 @@
       </p>
       <!-- TODO: Data form the API here on this ordered list -->
       <ol>
-        <li>General</li>
         <li>
-          Location wise babal thau ma xa?
+          General
+          <ol type="a">
+            <li>Does the hospital has it's own website?</li>
+            <li>Where is the hospital located & how to contact them?</li>
+            <li>What are the key highlights of that hospital?</li>
+            <li>Who is the owner and what is his/her background?</li>
+          </ol>
+        </li>        
+        <li>
+          Location and Space
           <ol type="a">
             <li>
               Does the highway network, locally and strategically, have the
               capacity to access and serve the hospital?
             </li>
-            <li>Kathmandu ko sabai point bata xito pugna sakinxa</li>
-            <li>Existing Highway networks to connect to outside of KTM</li>
-            <li>Traffic Congestion ko ni issue khasai xaina</li>
-            <li>Public Transportation ko availability and</li>
-            <li>Availability of developable land</li>
+            <li>Is the hospital easily accessible from all points of valley?</li>
+            <li>Does it have traffic congestion issues?</li>
+            <li>How far is the hospital from main areas of kathmandu?</li>
+            <li>Cover areas that are less reached by the major hospitals in kathmandu within 10 & 20 minutes.</li>
           </ol>
         </li>
+        <li>Environment and Greenery
+          <ol type="a">
+            <li>Less Air and Noise Pollution</li>
+            <li>Also no Negative Environmental Impact due to our hospital. If there are any negative environmental impacts like the loss of some trees and impacts on ecology, It should be manageable with the appropriate mitigation measures</li>
+          </ol>
+        </li>
+       <li>
+         Growth Potential
+          <ol type="a">
+            <li>The potential to create a high quality, future-proofed and flexible world-class hospital</li>
+            <li>Better expansion potential and more space to facilitate the planning of the hospital.</li>
+            <li>Growing Population within 1KM, 3KM & 5KM radius</li>
+            <li>Room for growth in population in future</li>
+          </ol>
+        </li>
+        <li>Does the highway network, locally and strategically, have the capacity to access and serve the hospital?</li>
+        <li>Can the site be well served by public transport?</li>
+        <li>Can the site be accessed from various directions?</li>
       </ol>
-    </article>
-    <article>
-      <h2>Data</h2>
-      <p>
-        To answer this business problem, the following factors have to be
-        extracted from various data sources:
-      </p>
-      <!-- TODO: Data from the API here in this unordered list -->
-      <ul>
-        <li>
-          Population & Ethnic Distribution of Each Neighborhood (Nepal Census)
-        </li>
-        <li>Income Distribution of Each Neighborhood (Nepal Census)</li>
-        <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>
-        <li>
-          Air Quality Index ( data from
-          <a href="https://pollution.gov.np/">https://pollution.gov.np/</a>)
-          and Local Research
-        </li>
-      </ul>
-      <p>The Nepal Census data was extracted from Census of Nepal</p>
-    </article>
+    </article>    
     <article>
       <h2>Data Collection</h2>
       <p>
@@ -515,44 +519,34 @@
         extracted from various data sources:
       </p>
       <ul>
+        <li>Map Visuals (Open layers)</li>
         <li>
-          Population & Ethnic Distribution of Each Neighborhood (Nepal Census)
+          Number of buildings over an area for a location (data from <a href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL">Overpass QL</a>)
         </li>
-        <li>Income Distribution of Each Neighborhood (Nepal Census)</li>
-        <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>
-        <li>
-          Distance to the hospitals from prime areas (Google Directions API)
-        </li>
-        <li>
-          Air Quality Index ( data from https://pollution.gov.np/) and Local
-          Research
-        </li>
+        <li>Direction from major locations (Google Directions API)</li>
+        <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>        
+        <li>Transportation reach from an hospital within 10 & 20 minutes (geoapify isolines) </li>
       </ul>
       <p>Besides, we have collected the following data manually.</p>
-      <ol>
-        <li>
-          Major hospitals inside Kathmandu Valley and various data related to
-          them
-          <!-- TODO: Data from the API here -->
-          <ol type="a">
-            <% data.fields.forEach(field=>{ %>
-              <li>
-                <h4>
-                  <%=field.name %>
-                </h4>
-                <ol type="i">
-                  <% field.field_items.forEach(item=>{ %>
-                    <li>
-                      <%=item.title%>
-                    </li>
-                    <% })%>
-                </ol>
+          
+        <ol type="a">
+          <li>Narrowed some major hospitals inside kathmandu valley.</li>
+          <% data.fields.forEach(field=>{ %>
+            <li>
+              <h4>
+                <%=field.name %>
+              </h4>
+              <ol type="i">
+                <% field.field_items.forEach(item=>{ %>
+                  <li>
+                    <%=item.title%>
+                  </li>
+                  <% })%>
+              </ol>
 
-              </li>
-              <% })%>
-          </ol>
-        </li>
-      </ol>
+            </li>
+            <% })%>
+        </ol>
 
       <section class="pb-before-always">
         <h2>Data Processing and Compilation
@@ -583,6 +577,14 @@
         </table>
       </section>
       <!-- loop here fields -->
+      <section>
+        <h2>Hospitals in Map Services</h2>
+        <p>Google maps is the most popular map service right now. There are other options like open 
+          street map, bing maps etc. Finding hospitals and directions to it has always been easy but map services
+          have made them significantly easier. With map services, people can have access to hospital name, location, directions,
+          websites & contact information. There were several establishments registed in google maps as a hospital but our analytics is only based upon significant establishments.
+        </p>
+      </section>
       <section class="pb-before-always">
         <h3>Most Significant Hospitals According to our Data</h3>
         <p>

@@ -313,15 +313,15 @@ const generatePdf = async (req, res) => {
     });
 
     /**Sends pdf */
-    html_to_pdf
-      .generatePdf({ content: data }, { format: "A4" })
-      .then((pdfBuffer) => {
-        res.contentType("application/pdf");
-        return res.send(pdfBuffer);
-      });
+    // html_to_pdf
+    //   .generatePdf({ content: data }, { format: "A4" })
+    //   .then((pdfBuffer) => {
+    //     res.contentType("application/pdf");
+    //     return res.send(pdfBuffer);
+    //   });
 
     /**Sends html */
-    // res.send();
+    res.send(data);
   } catch (e) {
     res.status(e.code || 500).json({
       success: false,
