@@ -562,7 +562,10 @@
         <h2>Data Processing and Compilation
         </h2>
         <p>
-          <!-- todo: add description -->
+          All the hospitals located inside and near kathmandu is taken from google map api.All the necessary fields used
+          for ranking top hospitals is also taken.
+          Then, an algorithm traverses through all the fields that are provided , then compares the weights of all those
+          fields for all the hospitals to find the top 10 significant hospitals.
         </p>
       </section>
       <section class="pb-before-always">
@@ -608,7 +611,7 @@
             <th>Name of Hospital</th>
             <th>Latitude</th>
             <th>Longitude</th>
-            <th>Address</th>
+            <th>Weight</th>
           </thead>
           <tbody>
             <% data.significantHospitals.forEach((hospital,index)=>{ %>
@@ -626,7 +629,7 @@
                   <%= hospital.HospitalDetails.find(x=>x.FieldItem.code==="longitude").value.value%>
                 </td>
                 <td>
-                  <%= hospital.HospitalDetails.find(x=>x.FieldItem.code==="address").value.value%>
+                  <%= hospital["totalWeight"]%>
                 </td>
               </tr>
               <%})%>
@@ -740,7 +743,7 @@
             <%})%>
         </section>
       </article>
-      <article>
+      <article class="pb-before-always">
         <h2>Data Processing and Compilation</h2>
         <p>
           All the data has been fed to our proprietary Research software (

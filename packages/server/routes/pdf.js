@@ -244,10 +244,15 @@ const generatePdf = async (req, res) => {
         };
 
         if (curr) {
-          acc[field.meta.code] = { ...curr, items: [...curr.items, newData] };
+          acc[field.meta.code] = {
+            ...curr,
+            totalWeight: hospital.totalWeight,
+            items: [...curr.items, newData],
+          };
         } else {
           acc[field.meta.code] = {
             id: field.id,
+            totalWeight: hospital.totalWeight,
             title: field.name,
             items: [newData],
           };
@@ -342,7 +347,7 @@ const generatePdf = async (req, res) => {
     }, []);
 
     const data = await createReport({
-      significantHospitals,
+      significantHospitals: JSON.parse(JSON.stringify(significantHospitals)),
       fields,
       hospitalDetails,
       weights,
@@ -357,7 +362,7 @@ const generatePdf = async (req, res) => {
     //   });
 
     /**Sends html */
-    res.send(data);
+    res.send(`<a href="${data}" download>download</a>`);
   } catch (e) {
     res.status(e.code || 500).json({
       success: false,
