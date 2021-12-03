@@ -12,7 +12,7 @@ const {
 const getDetails = require("./googleapis/get-details");
 const getDirections = require("./googleapis/get-directions");
 const getFakeValues = require("./fakeData");
-const buildings = require("./buildings");
+const buildingData = require("./building-data");
 
 const { Op } = Sequelize;
 
@@ -77,22 +77,9 @@ const main = async () => {
         rest = {
           ...rest,
           ...(await getFakeValues()),
-          // buildings_1km_radius: await buildings(
-          //   rest.latitude,
-          //   rest.longitude,
-          //   1
-          // ),
-          // buildings_3km_radius: await buildings(
-          //   rest.latitude,
-          //   rest.longitude,
-          //   3
-          // ),
-
-          // buildings_5km_radius: await buildings(
-          //   rest.latitude,
-          //   rest.longitude,
-          //   5
-          // ),
+          buildings_1km_radius: buildingData[place_id][1],
+          buildings_3km_radius: buildingData[place_id][3],
+          buildings_5km_radius: buildingData[place_id][5],
         };
 
         const originEntries = Object.entries(origins);

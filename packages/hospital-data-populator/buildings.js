@@ -36,3 +36,18 @@ buildings(27.6863031, 85.33880379999999, 1).then((resp) => {
 });
 
 module.exports = buildings;
+
+/* 5km radius green field
+[out:json][timeout:25];
+// gather results
+(
+  // query part for: “landuse=greenfield”
+  // node["landuse"="farm"](around:1000, 27.726818, 85.248619);
+  way["landuse"="greenfield"](around:5000, 27.726818, 85.248619);
+  //relation["landuse"="greenfield"]({{bbox}});
+);
+// print results
+out body;
+>;
+out skel qt;
+*/
