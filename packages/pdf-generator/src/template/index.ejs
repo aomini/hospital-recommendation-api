@@ -482,7 +482,7 @@
             <li>What are the key highlights of that hospital?</li>
             <li>Who is the owner and what is his/her background?</li>
           </ol>
-        </li>        
+        </li>
         <li>
           Location and Space
           <ol type="a">
@@ -499,11 +499,13 @@
         <li>Environment and Greenery
           <ol type="a">
             <li>Less Air and Noise Pollution</li>
-            <li>Also no Negative Environmental Impact due to our hospital. If there are any negative environmental impacts like the loss of some trees and impacts on ecology, It should be manageable with the appropriate mitigation measures</li>
+            <li>Also no Negative Environmental Impact due to our hospital. If there are any negative environmental
+              impacts like the loss of some trees and impacts on ecology, It should be manageable with the appropriate
+              mitigation measures</li>
           </ol>
         </li>
-       <li>
-         Growth Potential
+        <li>
+          Growth Potential
           <ol type="a">
             <li>The potential to create a high quality, future-proofed and flexible world-class hospital</li>
             <li>Better expansion potential and more space to facilitate the planning of the hospital.</li>
@@ -511,11 +513,12 @@
             <li>Room for growth in population in future</li>
           </ol>
         </li>
-        <li>Does the highway network, locally and strategically, have the capacity to access and serve the hospital?</li>
+        <li>Does the highway network, locally and strategically, have the capacity to access and serve the hospital?
+        </li>
         <li>Can the site be well served by public transport?</li>
         <li>Can the site be accessed from various directions?</li>
       </ol>
-    </article>    
+    </article>
     <article>
       <h2>Data Collection</h2>
       <p>
@@ -525,46 +528,53 @@
       <ul>
         <li>Map Visuals (Open layers)</li>
         <li>
-          Number of buildings over an area for a location (data from <a href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL">Overpass QL</a>)
+          Number of buildings over an area for a location (data from <a
+            href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL">Overpass QL</a>)
         </li>
         <li>Direction from major locations (Google Directions API)</li>
-        <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>        
+        <li>Number of Hospitals in Each Neighborhood (Google Map API)</li>
         <li>Transportation reach from an hospital within 10 & 20 minutes (geoapify isolines) </li>
       </ul>
       <p>Besides, we have collected the following data manually.</p>
-          
-        <ol type="a">
-          <li>Narrowed some major hospitals inside kathmandu valley.</li>
-          <% data.fields.forEach(field=>{ %>
-            <li>
-              <h4>
-                <%=field.name %>
-              </h4>
-              <ol type="i">
-                <% field.field_items.forEach(item=>{ %>
-                  <li>
-                    <%=item.title%>
-                  </li>
-                  <% })%>
-              </ol>
 
-            </li>
-            <% })%>
-        </ol>
+      <ol type="a">
+        <li>Narrowed some major hospitals inside kathmandu valley.</li>
+        <% data.fields.forEach(field=>{ %>
+          <li>
+            <h4>
+              <%=field.name %>
+            </h4>
+            <ol type="i">
+              <% field.field_items.forEach(item=>{ %>
+                <li>
+                  <%=item.title%>
+                </li>
+                <% })%>
+            </ol>
+
+          </li>
+          <% })%>
+      </ol>
 
       <section>
         <h2>Hospitals in Map Services</h2>
-        <p>Google maps is the most popular map service right now. There are other options like open 
+        <p>Google maps is the most popular map service right now. There are other options like open
           street map, bing maps etc. Finding hospitals and directions to it has always been easy but map services
-          have made them significantly easier. With map services, people can have access to hospital name, location, directions,
-          websites & contact information. There were several establishments registed in google maps as a hospital but our analytics is only based upon significant establishments. Significant establishments
+          have made them significantly easier. With map services, people can have access to hospital name, location,
+          directions,
+          websites & contact information. There were several establishments registed in google maps as a hospital but
+          our analytics is only based upon significant establishments. Significant establishments
           for our business has been sorted out by our Hospital ranking system.
         </p>
       </section>
       <section>
         <h2>Hospital Ranking System (HRS)</h2>
-        <p>We devised our own ranking system algorithm. This algorithm works by computing the total weight assigned to a hospital.
-          Weights are numbers assigned to a field item. The maximum starting weight is 1000. The data weights are set automatically by default when the first priority is created. These priorities weights can be modified later. The HRS algorithm sums up all the positive weights excluding empty & falsy values and sorts the hospital by their weight.</p>
+        <p>We devised our own ranking system algorithm. This algorithm works by computing the total weight assigned to a
+          hospital.
+          Weights are numbers assigned to a field item. The maximum starting weight is 1000. The data weights are set
+          automatically by default when the first priority is created. These priorities weights can be modified later.
+          The HRS algorithm sums up all the positive weights excluding empty & falsy values and sorts the hospital by
+          their weight.</p>
         <p>More about assigned weights on data processing and compilation section below.</p>
       </section>
 
@@ -609,7 +619,7 @@
         </table>
       </section>
       <!-- loop here fields -->
-      
+
       <section class="pb-before-always">
         <h3>Most Significant Hospitals According to our Data</h3>
         <p>
@@ -753,22 +763,6 @@
             </div>
             <%})%>
         </section>
-      </article>
-      <article class="pb-before-always">
-        <h2>Data Processing and Compilation</h2>
-        <p>
-          All the data has been fed to our proprietary Research software (
-          developed by Ombryo Pte Ltd. Singapore) The software uses GPT-3
-          Algorithm from Open AI to extract useful information from the data and
-          predict the best optimised location for the hospital. We have open
-          sourced the entire dataset on the github (
-          <a href="https://github.com/ombryo/sdasda">https://github.com/ombryo/sdasda </a>)
-        </p>
-      </article>
-      <article>
-        <h2>Major Criteria and Criteria Weight</h2>
-        <p>This is decided by Investors and key stakeholders themselves</p>
-        <!-- TODO: Insert the data below in a tabular format -->
       </article>
       <h2>Conclusion</h2>
       <%if(data.foundMatch){%>

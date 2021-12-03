@@ -28,24 +28,6 @@ const origins = {
   distance_from_sanga: "27.634265, 85.484711",
 };
 
-const getDirections = ({ origin, destination, mode }) => {
-  return axios
-    .get("https://maps.googleapis.com/maps/api/directions/json", {
-      params: {
-        key: process.env.API_KEY,
-        // lat,lng of tribhuwan international airport
-        origin,
-        destination,
-        mode,
-      },
-    })
-    .then((resp) => {
-      const { routes } = resp.data;
-      const { legs } = routes[0];
-      return [legs[0].distance.text, legs[0].duration.text];
-    });
-};
-
 const computeDefaultValue = (type) => {
   if (type === "text" || type === "textarea" || type === "number") {
     return "";
