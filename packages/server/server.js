@@ -20,6 +20,7 @@ const priorityRoutes = require("./routes/priority");
 const pdfRoutes = require("./routes/pdf");
 const compositeRoutes = require("./routes/composite");
 const mapRoutes = require("./routes/map");
+const pointRoutes = require("./routes/point");
 
 const bodyParser = require("body-parser");
 const port = process.env.PORT;
@@ -39,6 +40,7 @@ app.use("/api/priorities", priorityRoutes);
 app.use("/api/pdf", pdfRoutes);
 app.use("/api/composite", compositeRoutes);
 app.use("/api/map", mapRoutes);
+app.use("/api/point", pointRoutes);
 
 // middleware to handle errors
 // @todo fix
